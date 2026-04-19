@@ -142,6 +142,30 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .upload-remove{margin-top:12px;font-size:12px;color:var(--text-light);text-decoration:underline;cursor:pointer;display:none}
 .upload-remove:hover{color:var(--text)}
 
+/* VISUAL TILES */
+.vis-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:32px}
+.vis-card{border:1.5px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:all 0.15s;background:var(--surface);position:relative;overflow:hidden}
+.vis-card:hover{border-color:var(--text)}
+.vis-card.selected{border-color:var(--text);background:var(--selected-bg)}
+.vis-card.selected .ocheck{opacity:1}
+.vis-tile{width:100%;height:88px;background:#1e1e1e;border-bottom:1px solid var(--border);overflow:hidden;position:relative}
+.vis-card .option-name{font-size:13px;font-weight:500;color:var(--text);padding:11px 14px 12px}
+.vis-card .ocheck{position:absolute;top:10px;right:10px}
+/* motion hover effects */
+.vis-motion-subtle .vis-inner{transition:opacity 0.35s ease}
+.vis-motion-subtle:hover .vis-inner{opacity:0.4}
+.vis-motion-expressive .vis-inner{transition:transform 0.4s ease}
+.vis-motion-expressive:hover .vis-inner{transform:translateY(-9px)}
+/* animation tile effects */
+@keyframes tileDrift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-3px,-2px) scale(1.04)}66%{transform:translate(2px,-4px) scale(1.05)}}
+@keyframes tileReveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.vis-anim-hover .vis-inner{transition:transform 0.28s ease}
+.vis-anim-hover:hover .vis-inner{transform:scale(1.1)}
+.vis-anim-kinetic .vis-inner{animation:tileDrift 4s ease-in-out infinite}
+.vis-anim-reveal:hover .vis-inner{animation:tileReveal 0.6s ease forwards}
+/* tone count */
+.tone-count{font-size:11px;color:var(--text-light);margin-bottom:14px;margin-top:-18px}
+
 /* WELCOME */
 .welcome-wrap{max-width:600px}
 .welcome-eyebrow{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-light);margin-bottom:18px}
@@ -538,53 +562,53 @@ const TONE_OPTIONS = [
 ];
 
 const TYPOGRAPHY_OPTIONS = [
-  {id:'editorialist',name:'The Editorialist',descriptor:'Refined, literary, deeply considered',
+  {id:'editorialist',name:'Elegant & Literary',descriptor:'Good for: the author, the photographer, the wellness coach',
    headFont:"'Cormorant Garamond', serif",bodyFont:"'Cormorant Garamond', serif",
-   headWeight:'400',bodyWeight:'300',headSize:'20px',
+   headWeight:'400',bodyWeight:'300',headSize:'26px',
    sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
-  {id:'broadsheet',name:'Classic Broadsheet',descriptor:'Trusted, bookish, warm authority',
+  {id:'broadsheet',name:'Warm & Established',descriptor:'Good for: the consultant, the restaurant, the law practice',
    headFont:"'Playfair Display', serif",bodyFont:"'Lora', serif",
-   headWeight:'400',bodyWeight:'400',headSize:'19px',
+   headWeight:'400',bodyWeight:'400',headSize:'24px',
    sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
-  {id:'modern',name:'Studio Modern',descriptor:'Clean, direct, confidently minimal',
+  {id:'modern',name:'Clean & Confident',descriptor:'Good for: the tech brand, the agency, the modern shop',
    headFont:"'DM Sans', sans-serif",bodyFont:"'DM Sans', sans-serif",
-   headWeight:'500',bodyWeight:'300',headSize:'19px',
+   headWeight:'500',bodyWeight:'300',headSize:'24px',
    sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
-  {id:'fashion',name:'Fashion Forward',descriptor:'Elegant headline, invisible body',
+  {id:'fashion',name:'Sleek & Refined',descriptor:'Good for: the fashion brand, the luxury product, the stylist',
    headFont:"'Cormorant Garamond', serif",bodyFont:"'Inter', sans-serif",
-   headWeight:'300',bodyWeight:'300',headSize:'22px',
+   headWeight:'300',bodyWeight:'300',headSize:'28px',
    sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
-  {id:'luxury',name:'High Contrast Luxury',descriptor:'Drama in the headline, substance in the copy',
+  {id:'luxury',name:'Dramatic & Rich',descriptor:'Good for: the fine dining spot, the jeweler, the luxury service',
    headFont:"'IM Fell English', serif",bodyFont:"'Source Serif 4', serif",
-   headWeight:'400',bodyWeight:'300',headSize:'19px',
+   headWeight:'400',bodyWeight:'300',headSize:'24px',
    sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
-  {id:'condensed',name:'Power Condensed',descriptor:'Bold, architectural, strong presence',
+  {id:'condensed',name:'Bold & Direct',descriptor:'Good for: the musician, the fitness brand, the statement-maker',
    headFont:"'Oswald', sans-serif",bodyFont:"'Inter', sans-serif",
-   headWeight:'500',bodyWeight:'300',headSize:'20px',
+   headWeight:'500',bodyWeight:'300',headSize:'26px',
    sampleHead:'YOUR BRAND, DEFINED',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
-  {id:'refined',name:'Quiet Refinement',descriptor:'Understated, intelligent, airy',
+  {id:'refined',name:'Understated & Intelligent',descriptor:'Good for: the architect, the therapist, the professional practice',
    headFont:"'Libre Baskerville', serif",bodyFont:"'Source Sans 3', sans-serif",
-   headWeight:'400',bodyWeight:'300',headSize:'18px',
+   headWeight:'400',bodyWeight:'300',headSize:'23px',
    sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
-  {id:'artful',name:'Artful & Alive',descriptor:'Personality-forward, expressive',
+  {id:'artful',name:'Playful & Expressive',descriptor:'Good for: the illustrator, the kids brand, the creative studio',
    headFont:"'Abril Fatface', serif",bodyFont:"'Lato', sans-serif",
-   headWeight:'400',bodyWeight:'300',headSize:'19px',
+   headWeight:'400',bodyWeight:'300',headSize:'24px',
    sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
-  {id:'contemporary',name:'Cool & Contemporary',descriptor:'Geometric cool, consistent weight',
+  {id:'contemporary',name:'Geometric & Modern',descriptor:'Good for: the startup, the designer, the contemporary shop',
    headFont:"'Raleway', sans-serif",bodyFont:"'Raleway', sans-serif",
-   headWeight:'500',bodyWeight:'300',headSize:'19px',
+   headWeight:'500',bodyWeight:'300',headSize:'24px',
    sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
-  {id:'literary',name:'The Literary',descriptor:'Timeless, serious, deeply readable',
+  {id:'literary',name:'Classic & Readable',descriptor:'Good for: the writer, the educator, the book publisher',
    headFont:"'EB Garamond', serif",bodyFont:"'EB Garamond', serif",
-   headWeight:'400',bodyWeight:'400',headSize:'21px',
+   headWeight:'400',bodyWeight:'400',headSize:'27px',
    sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
-  {id:'natural',name:'Minimal Natural',descriptor:'Organic minimalism, warm neutrality',
+  {id:'natural',name:'Organic & Grounded',descriptor:"Good for: the wellness brand, the farmer's market, the natural product",
    headFont:"'Jost', sans-serif",bodyFont:"'Jost', sans-serif",
-   headWeight:'400',bodyWeight:'300',headSize:'19px',
+   headWeight:'400',bodyWeight:'300',headSize:'24px',
    sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
-  {id:'softeditorial',name:'Soft Editorial',descriptor:'Approachable editorial, gentle authority',
+  {id:'softeditorial',name:'Warm & Approachable',descriptor:'Good for: the life coach, the boutique, the creative service',
    headFont:"'Crimson Pro', serif",bodyFont:"'Nunito Sans', sans-serif",
-   headWeight:'400',bodyWeight:'300',headSize:'20px',
+   headWeight:'400',bodyWeight:'300',headSize:'25px',
    sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
 ];
 
@@ -647,28 +671,28 @@ const PALETTE_OPTIONS = [
 ];
 
 const LAYOUT_OPTIONS = [
-  {id:'spacious',name:'Spacious & Open',desc:'Generous margins, content floats, breathing room is intentional'},
-  {id:'balanced',name:'Balanced & Structured',desc:'Clear grid, consistent rhythm, nothing wastes space'},
-  {id:'dense',name:'Dense & Rich',desc:'Maximum content per view, editorial intensity, layered'},
+  {id:'spacious',name:'Room to breathe'},
+  {id:'balanced',name:'Clean and structured'},
+  {id:'dense',name:'Packed and layered'},
 ];
 
 const SHAPE_OPTIONS = [
-  {id:'sharp',name:'Sharp & Geometric',desc:'Right angles, hard edges, architectural precision'},
-  {id:'soft',name:'Soft & Organic',desc:'Rounded corners, fluid curves, gentle forms'},
-  {id:'mixed',name:'Mixed & Balanced',desc:'Structure with softness, intentional contrast'},
+  {id:'sharp',name:'Sharp edges'},
+  {id:'soft',name:'Soft and rounded'},
+  {id:'mixed',name:'A little of both'},
 ];
 
 const BORDER_OPTIONS = [
-  {id:'minimal',name:'Minimal',desc:'Almost no lines. Space does the work.'},
-  {id:'structured',name:'Structured',desc:'Clean dividers and subtle rules that organize'},
-  {id:'editorial',name:'Strong Editorial',desc:'Prominent lines used as design elements'},
-  {id:'bold',name:'Bold Framing',desc:'Heavy borders, contained sections, graphic impact'},
+  {id:'minimal',name:'No visible lines'},
+  {id:'structured',name:'Light dividers'},
+  {id:'editorial',name:'Lines as design'},
+  {id:'bold',name:'Heavy framing'},
 ];
 
 const MOTION_OPTIONS = [
-  {id:'still',name:'Still & Minimal',desc:'Essentially no animation. Static and deliberate.'},
-  {id:'subtle',name:'Subtle Feedback',desc:'Microinteractions only: hover states, gentle fades'},
-  {id:'expressive',name:'Expressive & Restrained',desc:'Purposeful transitions that enhance without distracting'},
+  {id:'still',name:'Completely still'},
+  {id:'subtle',name:'Gentle hover response'},
+  {id:'expressive',name:'Smooth transitions'},
 ];
 
 const TEXTURE_OPTIONS = [
@@ -678,10 +702,10 @@ const TEXTURE_OPTIONS = [
 ];
 
 const ANIM_OPTIONS = [
-  {id:'none',    name:'No Animations',    desc:'Clean and still. No movement, no transitions. Everything holds its position.'},
-  {id:'hover',   name:'Hover Only',       desc:'Buttons lift and the photo scales gently on hover. Responsive, not showy.'},
-  {id:'reveal',  name:'Entrance Reveal',  desc:'Content and image slide into view on load with staggered timing. A considered entrance.'},
-  {id:'kinetic', name:'Kinetic',          desc:'Photo drifts continuously. Buttons ripple on hover. Immersive and alive.'},
+  {id:'none',    name:'Nothing moves'},
+  {id:'hover',   name:'Hover only'},
+  {id:'reveal',  name:'Slides in on load'},
+  {id:'kinetic', name:'Always in motion'},
 ];
 
 const HARD_NO_OPTIONS = [
@@ -700,7 +724,7 @@ const defaultState = () => ({
   selections: {
     businessType: null, brandName: '', brandPhoto: null, tone: [],
     typography: null, palette: null,
-    customColors: {bg:'#F9F6F2', text:'#3A2E24', accent:'#8A7560'},
+    customColors: {bg:'#F9F6F2', text:'#3A2E24', accent:'#8A7560', accent2:'#EDE8E0', accent3:'#C8B89A'},
     layout: null, shape: null, border: null, motion: null,
     texture: null, animStyle: null, hardNos: [],
   }
@@ -733,24 +757,23 @@ function loadState() {
 const state = defaultState();
 
 // step index to key mapping
-const STEP_KEYS = [null,'businessType',null,'tone','typography','palette','layout','shape','border','motion','texture','animStyle','hardNos',null,null];
-const TOTAL_PREF_STEPS = 12; // steps 1-10
+const STEP_KEYS = [null,'businessType',null,'tone','typography','palette','layout','shape','border','motion','animStyle',null,null];
+const TOTAL_PREF_STEPS = 10;
 
 // ─── PROGRESS ───────────────────────────────────────────────────────
 function updateProgress() {
   const s = state.currentStep;
-  const labels = ['Welcome','Your business','Upload your brand','Emotional tone','Typography','Colour palette',
-    'Layout & spacing','Shape & edge','Borders & lines','Motion','Texture & pattern',
-    'Animation style','Hard no\'s','Review','Your profile'];
+  const labels = ['Welcome','Your business','Your photos','How it feels','How it reads','Color',
+    'How it breathes','Shapes','Structure','Movement','Animation','Review','Your profile'];
 
   document.getElementById('progress-label').textContent = labels[s] || '';
 
-  const pct = s <= 0 ? 0 : s >= 14 ? 100 : Math.round((s / 14) * 100);
+  const pct = s <= 0 ? 0 : s >= 12 ? 100 : Math.round((s / 12) * 100);
   document.getElementById('progress-fill').style.width = pct + '%';
 
-  // dots for steps 1-12
+  // dots for steps 1-10
   let dotsHtml = '';
-  for (let i = 1; i <= 12; i++) {
+  for (let i = 1; i <= 10; i++) {
     const cls = i < s ? 'done' : i === s ? 'active' : '';
     dotsHtml += `<div class="pdot ${cls}"></div>`;
   }
@@ -761,7 +784,7 @@ function updateProgress() {
 function renderStep() {
   const panel = document.getElementById('step-panel');
   const body = document.querySelector('.app-body');
-  body.classList.toggle('summary-mode', state.currentStep === 14);
+  body.classList.toggle('summary-mode', state.currentStep === 12);
   panel.classList.remove('step-animate');
   void panel.offsetWidth;
   panel.classList.add('step-animate');
@@ -775,15 +798,13 @@ function renderStep() {
     case 3:  panel.innerHTML = renderTone(); break;
     case 4:  panel.innerHTML = renderTypography(); break;
     case 5:  panel.innerHTML = renderPalette(); break;
-    case 6:  panel.innerHTML = renderOptions('Layout & Spacing','How should your space feel?','Choose how your design breathes.',LAYOUT_OPTIONS,'layout',false); break;
-    case 7:  panel.innerHTML = renderOptions('Shape & Edge','Sharp or soft?','This shapes everything from buttons to images to how sections meet.',SHAPE_OPTIONS,'shape',false); break;
-    case 8:  panel.innerHTML = renderOptions('Borders & Lines','How visible is the structure?','Lines can anchor, divide, or disappear entirely.',BORDER_OPTIONS,'border',true); break;
-    case 9:  panel.innerHTML = renderOptions('Motion & Interaction','How much should things move?','Even subtle motion carries a personality.',MOTION_OPTIONS,'motion',false); break;
-    case 10: panel.innerHTML = renderOptions('Texture & Pattern','How layered should the surfaces be?','Texture can add depth, or you may want none at all.',TEXTURE_OPTIONS,'texture',false); break;
-    case 11: panel.innerHTML = renderOptions('Animation Style','How should things move and reveal?','Choose what happens when the page loads and when the user interacts.',ANIM_OPTIONS,'animStyle',false); break;
-    case 12: panel.innerHTML = renderHardNos(); break;
-    case 13: panel.innerHTML = renderReview(); break;
-    case 14: panel.innerHTML = renderSummary(); break;
+    case 6:  panel.innerHTML = renderLayout(); break;
+    case 7:  panel.innerHTML = renderShape(); break;
+    case 8:  panel.innerHTML = renderBorders(); break;
+    case 9:  panel.innerHTML = renderMotion(); break;
+    case 10: panel.innerHTML = renderAnimation(); break;
+    case 11: panel.innerHTML = renderReview(); break;
+    case 12: panel.innerHTML = renderSummary(); break;
   }
 }
 
@@ -795,19 +816,18 @@ function renderWelcome() {
       <h1 class="welcome-title">So Tell Me What You Want</h1>
       <p class="welcome-sub"><em>what you really really want</em></p>
       <p class="welcome-body">
-        This is a guided conversation about taste. We'll work through a series of visual preference questions together, one step at a time, until we have a clear, usable picture of exactly what your brand should feel like.
+        You know your business better than anyone. This is just me asking the right questions. Go with your gut on every answer — there's no wrong direction, just yours.
       </p>
-      <p class="welcome-note">Nothing is final. You can go back and change any choice at any time.</p>
+      <p class="welcome-note">You can go back and change anything at any time.</p>
       <div class="welcome-steps">
-        <div class="ws-item"><div class="ws-num">1</div>Tell me what kind of business this is for</div>
-        <div class="ws-item"><div class="ws-num">2</div>Upload a brand or product photo (optional)</div>
-        <div class="ws-item"><div class="ws-num">3</div>Choose your emotional tone</div>
-        <div class="ws-item"><div class="ws-num">4</div>Pick a typography direction</div>
-        <div class="ws-item"><div class="ws-num">5</div>Choose a colour palette</div>
-        <div class="ws-item"><div class="ws-num">6</div>Layout, shape, texture, and motion</div>
-        <div class="ws-item"><div class="ws-num">7</div>Choose your animation style for photos and buttons</div>
-        <div class="ws-item"><div class="ws-num">8</div>Tell me your hard no's</div>
-        <div class="ws-item"><div class="ws-num">9</div>Review everything and get your design profile</div>
+        <div class="ws-item"><div class="ws-num">1</div>What kind of business is this for</div>
+        <div class="ws-item"><div class="ws-num">2</div>Upload a photo if you have one</div>
+        <div class="ws-item"><div class="ws-num">3</div>How it should feel</div>
+        <div class="ws-item"><div class="ws-num">4</div>How your words should look</div>
+        <div class="ws-item"><div class="ws-num">5</div>Colors</div>
+        <div class="ws-item"><div class="ws-num">6</div>Space, shape, and structure</div>
+        <div class="ws-item"><div class="ws-num">7</div>How much it moves</div>
+        <div class="ws-item"><div class="ws-num">8</div>Review and get your profile</div>
       </div>
       <div class="nav-row">
         <button class="btn-next" onclick="goNext()">Let's Begin →</button>
@@ -924,8 +944,8 @@ function renderTone() {
   return `
     <div class="step-eyebrow">Step 3 of ${TOTAL_PREF_STEPS}</div>
     <h2 class="step-title">What should your brand feel like?</h2>
-    <p class="step-desc">Select all the words that resonate. There are no wrong answers. This is about instinct.</p>
-    ${recTones.length ? `<p class="rec-intro">Brighter borders are suggested for ${biz.name} brands.</p>` : ''}
+    <p class="step-desc">Pick up to 3 words that feel like you. Go with your gut.</p>
+    <div class="tone-count" id="tone-count">${sel.length}/3 chosen</div>
     <div class="chip-grid">
       ${TONE_OPTIONS.map(t => `
         <div class="chip ${sel.includes(t)?'selected':''} ${recTones.includes(t)?'rec':''}" onclick="toggleTone('${t}')">${t}</div>
@@ -940,10 +960,17 @@ function renderTone() {
 function toggleTone(word) {
   const arr = state.selections.tone;
   const i = arr.indexOf(word);
-  if (i > -1) arr.splice(i, 1); else arr.push(word);
+  if (i > -1) {
+    arr.splice(i, 1);
+  } else {
+    if (arr.length >= 3) return;
+    arr.push(word);
+  }
   document.querySelectorAll('.chip').forEach(el => {
     el.classList.toggle('selected', arr.includes(el.textContent));
   });
+  const countEl = document.getElementById('tone-count');
+  if (countEl) countEl.textContent = `${arr.length}/3 chosen`;
   saveState();
   renderCanvas();
 }
@@ -956,7 +983,7 @@ function renderTypography() {
   return `
     <div class="step-eyebrow">Step 4 of ${TOTAL_PREF_STEPS}</div>
     <h2 class="step-title">How should your words look?</h2>
-    <p class="step-desc">Typography sets the personality before a single word is read. Choose the combination that feels most like you.</p>
+    <p class="step-desc">Your fonts set the mood before anyone reads a word. Pick the one that feels most like the brand you're building.</p>
     <div class="typo-grid">
       ${TYPOGRAPHY_OPTIONS.map(t => `
         <div class="typo-card ${sel===t.id?'selected':''}" onclick="selectOption('typography','${t.id}',this)">
@@ -982,8 +1009,8 @@ function renderPalette() {
   const recPal = biz ? biz.recommendedPalette : [];
   return `
     <div class="step-eyebrow">Step 5 of ${TOTAL_PREF_STEPS}</div>
-    <h2 class="step-title">Which colours feel right?</h2>
-    <p class="step-desc">Choose the palette that matches the emotional world you want your brand to live in.</p>
+    <h2 class="step-title">Which colors feel most supportive for your brand?</h2>
+    <p class="step-desc">Choose the palette that fits the world you want your brand to live in. You can tweak any of the colors below after you pick.</p>
     <div class="palette-grid">
       ${PALETTE_OPTIONS.map(p => `
         <div class="palette-card ${sel===p.id?'selected':''}" onclick="selectOption('palette','${p.id}',this)">
@@ -999,7 +1026,7 @@ function renderPalette() {
     </div>
       <div class="palette-card ${sel==='custom'?'selected':''}" style="grid-column:span 2" onclick="selectOption('palette','custom',this)">
         <div class="palette-name">Build Your Own</div>
-        <div class="palette-mood">Define your own background, text, and accent colour</div>
+        <div class="palette-mood">Adjust any of the five colors — they start from whatever you picked above</div>
         <div class="custom-color-rows" onclick="event.stopPropagation()">
           <div class="custom-color-row">
             <span>Background</span>
@@ -1016,11 +1043,23 @@ function renderPalette() {
             <input type="color" class="color-swatch-picker" value="${state.selections.customColors.accent}" oninput="updateCustomColor('accent',this.value);this.nextElementSibling.value=this.value" />
             <input type="text" class="hex-input" value="${state.selections.customColors.accent}" maxlength="7" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value)){updateCustomColor('accent',this.value);this.previousElementSibling.value=this.value}" />
           </div>
+          <div class="custom-color-row">
+            <span>Accent 2</span>
+            <input type="color" class="color-swatch-picker" value="${state.selections.customColors.accent2||'#EDE8E0'}" oninput="updateCustomColor('accent2',this.value);this.nextElementSibling.value=this.value" />
+            <input type="text" class="hex-input" value="${state.selections.customColors.accent2||'#EDE8E0'}" maxlength="7" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value)){updateCustomColor('accent2',this.value);this.previousElementSibling.value=this.value}" />
+          </div>
+          <div class="custom-color-row">
+            <span>Accent 3</span>
+            <input type="color" class="color-swatch-picker" value="${state.selections.customColors.accent3||'#C8B89A'}" oninput="updateCustomColor('accent3',this.value);this.nextElementSibling.value=this.value" />
+            <input type="text" class="hex-input" value="${state.selections.customColors.accent3||'#C8B89A'}" maxlength="7" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value)){updateCustomColor('accent3',this.value);this.previousElementSibling.value=this.value}" />
+          </div>
         </div>
         <div class="custom-preview-strip">
           <div id="cprev-bg" style="background:${state.selections.customColors.bg}"></div>
-          <div id="cprev-text" style="background:${state.selections.customColors.text}"></div>
+          <div id="cprev-accent2" style="background:${state.selections.customColors.accent2||'#EDE8E0'}"></div>
           <div id="cprev-accent" style="background:${state.selections.customColors.accent}"></div>
+          <div id="cprev-accent3" style="background:${state.selections.customColors.accent3||'#C8B89A'}"></div>
+          <div id="cprev-text" style="background:${state.selections.customColors.text}"></div>
         </div>
         <div class="ocheck" style="position:absolute;top:12px;right:12px"></div>
       </div>
@@ -1036,7 +1075,7 @@ function updateCustomColor(field, value) {
   const el = document.getElementById('cprev-' + field);
   if (el) el.style.background = value;
   saveState();
-  if (state.selections.palette === 'custom') renderCanvas();
+  renderCanvas();
 }
 
 // ─── GENERIC OPTIONS STEP ────────────────────────────────────────────
@@ -1061,6 +1100,130 @@ function renderOptions(eyebrow, title, desc, options, key, fourCol) {
       <button class="btn-back" onclick="goBack()">← Back</button>
       <button class="btn-next" onclick="goNext()">Next Step →</button>
     </div>`;
+}
+
+// ─── VISUAL TILE HELPERS ─────────────────────────────────────────────
+function visTile(html) { return `<div class="vis-tile">${html}</div>`; }
+const VIS_BAR = (w,op=1) => `<div style="height:7px;width:${w}%;background:rgba(120,120,120,${op});border-radius:1px"></div>`;
+
+// ─── LAYOUT ──────────────────────────────────────────────────────────
+function renderLayout() {
+  const sel = state.selections.layout;
+  const tiles = {
+    spacious: visTile(`<div style="height:100%;display:flex;align-items:center;justify-content:center"><div style="width:50%;height:10px;background:#505050;border-radius:2px"></div></div>`),
+    balanced: visTile(`<div style="height:100%;display:flex;flex-direction:column"><div style="height:20px;background:#333;border-bottom:1px solid #444;flex-shrink:0"></div><div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px"><div style="background:#2e2e2e;border-radius:3px"></div><div style="background:#2e2e2e;border-radius:3px"></div></div></div>`),
+    dense: visTile(`<div style="height:100%;display:flex;flex-direction:column;gap:3px;padding:7px">${[100,82,100,88,72,58].map(w=>VIS_BAR(w)).join('')}</div>`),
+  };
+  return `
+    <div class="step-eyebrow">Step 6 of ${TOTAL_PREF_STEPS}</div>
+    <h2 class="step-title">How should everything breathe?</h2>
+    <p class="step-desc">Hover each one to get a feel for it.</p>
+    <div class="vis-grid">
+      ${LAYOUT_OPTIONS.map(o=>`
+        <div class="vis-card ${sel===o.id?'selected':''}" onclick="selectOption('layout','${o.id}',this)">
+          ${tiles[o.id]}
+          <div class="option-name">${o.name}</div>
+          <div class="ocheck"></div>
+        </div>`).join('')}
+    </div>
+    <div class="nav-row"><button class="btn-back" onclick="goBack()">← Back</button><button class="btn-next" onclick="goNext()">Next Step →</button></div>`;
+}
+
+// ─── SHAPE ───────────────────────────────────────────────────────────
+function renderShape() {
+  const sel = state.selections.shape;
+  const box = (r,btn) => `<div style="width:38px;height:38px;background:#3a3a3a;border:1.5px solid #555;border-radius:${r}"></div><div style="flex:1;display:flex;flex-direction:column;gap:5px"><div style="height:7px;background:#444;border-radius:${r}"></div><div style="height:7px;background:#363636;width:75%;border-radius:${r}"></div><div style="height:20px;background:#505050;width:55%;border-radius:${btn};margin-top:3px"></div></div>`;
+  const tiles = {
+    sharp: visTile(`<div style="height:100%;display:flex;align-items:center;gap:8px;padding:14px">${box('0','0')}</div>`),
+    soft:  visTile(`<div style="height:100%;display:flex;align-items:center;gap:8px;padding:14px">${box('20px','100px')}</div>`),
+    mixed: visTile(`<div style="height:100%;display:flex;align-items:center;gap:8px;padding:14px">${box('4px','100px')}</div>`),
+  };
+  return `
+    <div class="step-eyebrow">Step 7 of ${TOTAL_PREF_STEPS}</div>
+    <h2 class="step-title">Sharp or soft?</h2>
+    <p class="step-desc">This applies to buttons, images, cards — everything with an edge.</p>
+    <div class="vis-grid">
+      ${SHAPE_OPTIONS.map(o=>`
+        <div class="vis-card ${sel===o.id?'selected':''}" onclick="selectOption('shape','${o.id}',this)">
+          ${tiles[o.id]}
+          <div class="option-name">${o.name}</div>
+          <div class="ocheck"></div>
+        </div>`).join('')}
+    </div>
+    <div class="nav-row"><button class="btn-back" onclick="goBack()">← Back</button><button class="btn-next" onclick="goNext()">Next Step →</button></div>`;
+}
+
+// ─── BORDERS ─────────────────────────────────────────────────────────
+function renderBorders() {
+  const sel = state.selections.border;
+  const tiles = {
+    minimal:    visTile(`<div style="height:100%;display:flex;flex-direction:column;justify-content:center;padding:14px;gap:8px">${VIS_BAR(70,0.7)}${VIS_BAR(100,0.4)}${VIS_BAR(85,0.4)}</div>`),
+    structured: visTile(`<div style="height:100%;display:flex;flex-direction:column;justify-content:center;padding:10px;gap:0"><div style="padding:7px 0;border-bottom:1px solid #3a3a3a">${VIS_BAR(65)}</div><div style="padding:7px 0;border-bottom:1px solid #3a3a3a">${VIS_BAR(90,0.5)}</div><div style="padding:7px 0">${VIS_BAR(75,0.5)}</div></div>`),
+    editorial:  visTile(`<div style="height:100%;display:flex;flex-direction:column;justify-content:center;padding:12px;gap:8px"><div style="height:3px;background:#777;width:100%;border-radius:1px"></div>${VIS_BAR(70)}${VIS_BAR(90,0.5)}</div>`),
+    bold:       visTile(`<div style="height:100%;display:flex;align-items:center;justify-content:center;padding:10px"><div style="border:3px solid #666;flex:1;height:100%;display:flex;flex-direction:column;justify-content:center;padding:8px;gap:5px">${VIS_BAR(65)}${VIS_BAR(88,0.5)}</div></div>`),
+  };
+  return `
+    <div class="step-eyebrow">Step 8 of ${TOTAL_PREF_STEPS}</div>
+    <h2 class="step-title">How structured should it look?</h2>
+    <p class="step-desc">Lines and borders define how your content is organized — or whether it floats freely.</p>
+    <div class="vis-grid">
+      ${BORDER_OPTIONS.map(o=>`
+        <div class="vis-card ${sel===o.id?'selected':''}" onclick="selectOption('border','${o.id}',this)">
+          ${tiles[o.id]}
+          <div class="option-name">${o.name}</div>
+          <div class="ocheck"></div>
+        </div>`).join('')}
+    </div>
+    <div class="nav-row"><button class="btn-back" onclick="goBack()">← Back</button><button class="btn-next" onclick="goNext()">Next Step →</button></div>`;
+}
+
+// ─── MOTION ──────────────────────────────────────────────────────────
+function renderMotion() {
+  const sel = state.selections.motion;
+  const square = `<div class="vis-inner" style="width:48px;height:48px;background:#3a3a3a;border:1.5px solid #555;border-radius:6px"></div>`;
+  const tiles = {
+    still:      visTile(`<div style="height:100%;display:flex;align-items:center;justify-content:center">${square}</div>`),
+    subtle:     visTile(`<div class="vis-motion-subtle" style="height:100%;display:flex;align-items:center;justify-content:center">${square}</div>`),
+    expressive: visTile(`<div class="vis-motion-expressive" style="height:100%;display:flex;align-items:center;justify-content:center">${square}</div>`),
+  };
+  return `
+    <div class="step-eyebrow">Step 9 of ${TOTAL_PREF_STEPS}</div>
+    <h2 class="step-title">How much should it respond?</h2>
+    <p class="step-desc">Hover each tile to feel the difference.</p>
+    <div class="vis-grid">
+      ${MOTION_OPTIONS.map(o=>`
+        <div class="vis-card ${sel===o.id?'selected':''}" onclick="selectOption('motion','${o.id}',this)">
+          ${tiles[o.id]}
+          <div class="option-name">${o.name}</div>
+          <div class="ocheck"></div>
+        </div>`).join('')}
+    </div>
+    <div class="nav-row"><button class="btn-back" onclick="goBack()">← Back</button><button class="btn-next" onclick="goNext()">Next Step →</button></div>`;
+}
+
+// ─── ANIMATION ───────────────────────────────────────────────────────
+function renderAnimation() {
+  const sel = state.selections.animStyle;
+  const img = `<div class="vis-inner" style="width:52px;height:52px;background:#3a3a3a;border:1.5px solid #555;border-radius:6px"></div>`;
+  const tiles = {
+    none:    visTile(`<div style="height:100%;display:flex;align-items:center;justify-content:center">${img}</div>`),
+    hover:   visTile(`<div class="vis-anim-hover" style="height:100%;display:flex;align-items:center;justify-content:center">${img}</div>`),
+    reveal:  visTile(`<div class="vis-anim-reveal" style="height:100%;display:flex;align-items:center;justify-content:center">${img}</div>`),
+    kinetic: visTile(`<div class="vis-anim-kinetic" style="height:100%;display:flex;align-items:center;justify-content:center">${img}</div>`),
+  };
+  return `
+    <div class="step-eyebrow">Step 10 of ${TOTAL_PREF_STEPS}</div>
+    <h2 class="step-title">How should things move?</h2>
+    <p class="step-desc">Hover each tile — the ones with animation will show you exactly what it feels like.</p>
+    <div class="vis-grid">
+      ${ANIM_OPTIONS.map(o=>`
+        <div class="vis-card ${sel===o.id?'selected':''}" onclick="selectOption('animStyle','${o.id}',this)">
+          ${tiles[o.id]}
+          <div class="option-name">${o.name}</div>
+          <div class="ocheck"></div>
+        </div>`).join('')}
+    </div>
+    <div class="nav-row"><button class="btn-back" onclick="goBack()">← Back</button><button class="btn-next" onclick="goNext()">Next Step →</button></div>`;
 }
 
 // ─── HARD NO'S ───────────────────────────────────────────────────────
@@ -1096,8 +1259,17 @@ function toggleHardNo(i) {
 // ─── GENERIC SELECT ──────────────────────────────────────────────────
 function selectOption(key, value, el) {
   state.selections[key] = value;
-  const parent = el.closest('.typo-grid, .palette-grid, .option-grid');
-  if (parent) parent.querySelectorAll('.typo-card,.palette-card,.option-card').forEach(c => c.classList.remove('selected'));
+  if (key === 'palette' && value !== 'custom') {
+    const p = PALETTE_OPTIONS.find(p => p.id === value);
+    if (p && p.colors.length >= 5) {
+      state.selections.customColors = {
+        bg: p.colors[0], accent2: p.colors[1], accent: p.colors[2],
+        accent3: p.colors[3], text: p.colors[4],
+      };
+    }
+  }
+  const parent = el.closest('.typo-grid, .palette-grid, .option-grid, .vis-grid');
+  if (parent) parent.querySelectorAll('.typo-card,.palette-card,.option-card,.vis-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   saveState();
   renderCanvas();
@@ -1112,29 +1284,26 @@ function renderReview() {
   const shape = SHAPE_OPTIONS.find(sh => sh.id === s.shape);
   const border = BORDER_OPTIONS.find(b => b.id === s.border);
   const motion = MOTION_OPTIONS.find(m => m.id === s.motion);
-  const texture = TEXTURE_OPTIONS.find(t => t.id === s.texture);
 
   const biz = BUSINESS_TYPES.find(b => b.id === s.businessType);
   const items = [
     {cat:'Brand name', val: s.brandName || 'Not entered', step:1},
     {cat:'Business type', val: biz ? biz.name : 'Not chosen', step:1},
     {cat:'Brand photo', val: s.brandPhoto ? 'Uploaded' : 'Skipped', step:2},
-    {cat:'Emotional tone', val: s.tone.length ? s.tone.join(', ') : 'Not chosen', step:3},
-    {cat:'Typography', val: typo ? `${typo.name}: ${typo.descriptor}` : 'Not chosen', step:4},
-    {cat:'Colour palette', val: pal ? `${pal.name}: ${pal.descriptor}` : (s.palette==='custom'?'Custom colours':'Not chosen'), step:5},
-    {cat:'Layout & spacing', val: layout ? layout.name : 'Not chosen', step:6},
-    {cat:'Shape & edge', val: shape ? shape.name : 'Not chosen', step:7},
-    {cat:'Borders & lines', val: border ? border.name : 'Not chosen', step:8},
-    {cat:'Motion', val: motion ? motion.name : 'Not chosen', step:9},
-    {cat:'Texture', val: texture ? texture.name : 'Not chosen', step:10},
-    {cat:'Animation style', val: ANIM_OPTIONS.find(a=>a.id===s.animStyle)?.name || 'Not chosen', step:11},
-    {cat:'Hard no\'s', val: s.hardNos.length ? s.hardNos.join(', ') : 'None specified', step:12},
+    {cat:'How it feels', val: s.tone.length ? s.tone.join(', ') : 'Not chosen', step:3},
+    {cat:'Fonts', val: typo ? typo.name : 'Not chosen', step:4},
+    {cat:'Color palette', val: pal ? pal.name : (s.palette==='custom'?'Custom colors':'Not chosen'), step:5},
+    {cat:'How it breathes', val: layout ? layout.name : 'Not chosen', step:6},
+    {cat:'Shapes', val: shape ? shape.name : 'Not chosen', step:7},
+    {cat:'Structure', val: border ? border.name : 'Not chosen', step:8},
+    {cat:'Movement', val: motion ? motion.name : 'Not chosen', step:9},
+    {cat:'Animation', val: ANIM_OPTIONS.find(a=>a.id===s.animStyle)?.name || 'Not chosen', step:10},
   ];
 
   return `
     <div class="step-eyebrow">Review</div>
     <h2 class="step-title">Does this look right?</h2>
-    <p class="step-desc">Here are all your choices. Click Edit next to any category to go back and change it.</p>
+    <p class="step-desc">Here's everything you chose. Hit Edit next to anything you want to change.</p>
     <div class="review-grid">
       ${items.map(item => `
         <div class="review-card">
@@ -1701,7 +1870,6 @@ function copyPrompt() {
   const shape = SHAPE_OPTIONS.find(sh => sh.id === s.shape);
   const border = BORDER_OPTIONS.find(b => b.id === s.border);
   const motion = MOTION_OPTIONS.find(m => m.id === s.motion);
-  const texture = TEXTURE_OPTIONS.find(t => t.id === s.texture);
   const anim = ANIM_OPTIONS.find(a => a.id === s.animStyle);
   const voice = generateVoice(s, typo, pal, layout, shape);
 
@@ -1712,16 +1880,14 @@ function copyPrompt() {
     '',
     s.brandName ? `BRAND NAME\n${s.brandName}` : '',
     biz ? `BUSINESS TYPE\n${biz.name}, ${biz.desc}` : '',
-    s.tone.length ? `EMOTIONAL DIRECTION\n${s.tone.join(', ')}` : '',
-    typo ? `TYPOGRAPHY\n${typo.name}: ${typo.descriptor}` : '',
-    pal ? `COLOUR PALETTE\n${pal.name}: ${pal.descriptor}\n${pal.colors.join(' · ')}` : (s.palette==='custom'?`COLOUR PALETTE\nCustom: bg ${s.customColors.bg}, text ${s.customColors.text}, accent ${s.customColors.accent}`:''),
-    layout ? `LAYOUT & SPACING\n${layout.name}: ${layout.desc}` : '',
-    shape ? `SHAPE & EDGE\n${shape.name}: ${shape.desc}` : '',
-    border ? `BORDERS & LINES\n${border.name}: ${border.desc}` : '',
-    motion ? `MOTION\n${motion.name}: ${motion.desc}` : '',
-    texture ? `TEXTURE\n${texture.name}: ${texture.desc}` : '',
-    anim ? `ANIMATION STYLE\n${anim.name}: ${anim.desc}` : '',
-    s.hardNos.length ? `HARD NO'S\n${s.hardNos.join(', ')}` : '',
+    s.tone.length ? `HOW IT SHOULD FEEL\n${s.tone.join(', ')}` : '',
+    typo ? `FONTS\n${typo.name}\n${typo.descriptor}` : '',
+    pal ? `COLOR PALETTE\n${pal.name}: ${pal.descriptor}\n${pal.colors.join(' · ')}` : (s.palette==='custom'?`COLOR PALETTE\nCustom: bg ${s.customColors.bg}, text ${s.customColors.text}, accent ${s.customColors.accent}, accent2 ${s.customColors.accent2||''}, accent3 ${s.customColors.accent3||''}`:''),
+    layout ? `HOW IT BREATHES\n${layout.name}` : '',
+    shape ? `SHAPES\n${shape.name}` : '',
+    border ? `STRUCTURE\n${border.name}` : '',
+    motion ? `MOVEMENT\n${motion.name}` : '',
+    anim ? `ANIMATION\n${anim.name}` : '',
     '',
     `OVERALL DESIGN VOICE\n${voice}`,
   ].filter(Boolean).join('\n\n');
@@ -1847,18 +2013,16 @@ function renderRecap() {
   const shape = SHAPE_OPTIONS.find(sh => sh.id === s.shape);
   const border = BORDER_OPTIONS.find(b => b.id === s.border);
   const motion = MOTION_OPTIONS.find(m => m.id === s.motion);
-  const texture = TEXTURE_OPTIONS.find(t => t.id === s.texture);
 
   const items = [
-    {key:'Tone', val: s.tone.length ? s.tone.join(', ') : null},
-    {key:'Typography', val: typo?.name || null},
-    {key:'Palette', val: pal?.name || null},
-    {key:'Layout', val: layout?.name || null},
-    {key:'Shape', val: shape?.name || null},
-    {key:'Borders', val: border?.name || null},
-    {key:'Motion', val: motion?.name || null},
-    {key:'Texture', val: texture?.name || null},
-    {key:"Hard No's", val: s.hardNos.length ? s.hardNos.join(', ') : null},
+    {key:'How it feels', val: s.tone.length ? s.tone.join(', ') : null},
+    {key:'Fonts', val: typo?.name || null},
+    {key:'Colors', val: pal?.name || null},
+    {key:'Breathing room', val: layout?.name || null},
+    {key:'Shapes', val: shape?.name || null},
+    {key:'Structure', val: border?.name || null},
+    {key:'Movement', val: motion?.name || null},
+    {key:'Animation', val: ANIM_OPTIONS.find(a=>a.id===s.animStyle)?.name || null},
   ];
 
   const el = document.getElementById('recap-list');
@@ -1874,7 +2038,7 @@ function renderRecap() {
 function startOver() {
   sessionStorage.removeItem(STATE_KEY);
   state.currentStep = 0;
-  state.selections = {businessType:null,brandName:'',brandPhoto:null,tone:[],typography:null,palette:null,customColors:{bg:'#F9F6F2',text:'#3A2E24',accent:'#8A7560'},layout:null,shape:null,border:null,motion:null,texture:null,animStyle:null,hardNos:[]};
+  state.selections = {businessType:null,brandName:'',brandPhoto:null,tone:[],typography:null,palette:null,customColors:{bg:'#F9F6F2',text:'#3A2E24',accent:'#8A7560',accent2:'#EDE8E0',accent3:'#C8B89A'},layout:null,shape:null,border:null,motion:null,texture:null,animStyle:null,hardNos:[]};
   // reset canvas inline styles
   const card = document.getElementById('canvas-card');
   const body = document.getElementById('canvas-body');
@@ -1894,7 +2058,7 @@ function startOver() {
 
 // ─── NAVIGATION ──────────────────────────────────────────────────────
 function goNext() {
-  if (state.currentStep < 14) { state.currentStep++; saveState(); renderStep(); }
+  if (state.currentStep < 12) { state.currentStep++; saveState(); renderStep(); }
 }
 function goBack() {
   if (state.currentStep > 0) { state.currentStep--; saveState(); renderStep(); }
