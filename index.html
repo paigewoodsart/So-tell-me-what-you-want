@@ -472,7 +472,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 <!-- TOPBAR -->
 <header class="topbar" id="topbar">
   <div class="topbar-brand">
-    <div class="topbar-title">Tell Me Everything</div>
+    <div class="topbar-title">So Tell Me What You Want</div>
     <div class="topbar-sub">A Design Preference Profile by Paige Woods</div>
   </div>
   <div class="progress-wrap" id="progress-wrap">
@@ -792,8 +792,8 @@ function renderWelcome() {
   return `
     <div class="welcome-wrap">
       <div class="welcome-eyebrow">Welcome</div>
-      <h1 class="welcome-title">Tell Me <em>Everything.</em></h1>
-      <p class="welcome-sub">A design preference profile by Paige Woods</p>
+      <h1 class="welcome-title">So Tell Me What You Want</h1>
+      <p class="welcome-sub"><em>what you really really want</em></p>
       <p class="welcome-body">
         This is a guided conversation about taste. We'll work through a series of visual preference questions together, one step at a time, until we have a clear, usable picture of exactly what your brand should feel like.
       </p>
@@ -1582,7 +1582,7 @@ function printSummary() {
 
       <div style="margin-bottom:36px;padding-bottom:28px;border-bottom:2px solid #1A1A1A;display:flex;justify-content:space-between;align-items:flex-end;gap:24px">
         <div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;line-height:1;margin-bottom:7px">Tell Me Everything</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;line-height:1;margin-bottom:7px">So Tell Me What You Want</div>
           ${s.brandName ? `<div style="font-size:15px;font-weight:500;color:#1A1A1A;margin-bottom:3px">${s.brandName}</div>` : ''}
           <div style="font-size:11px;color:#B8B0A4">${biz ? biz.name + ' · ' : ''}Design Preference Profile by Paige Woods</div>
         </div>
@@ -1708,7 +1708,7 @@ function copyPrompt() {
   const biz = BUSINESS_TYPES.find(b => b.id === s.businessType);
   const text = [
     'DESIGN PREFERENCE BRIEF',
-    'Generated via Tell Me Everything: A Design Preference Profile by Paige Woods',
+    'Generated via So Tell Me What You Want: A Design Preference Profile by Paige Woods',
     '',
     s.brandName ? `BRAND NAME\n${s.brandName}` : '',
     biz ? `BUSINESS TYPE\n${biz.name}, ${biz.desc}` : '',
