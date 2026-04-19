@@ -1027,7 +1027,7 @@ function renderPalette() {
     </div>
       <div class="palette-card ${sel==='custom'?'selected':''}" style="grid-column:span 2" onclick="selectOption('palette','custom',this)">
         <div class="palette-name">Build Your Own</div>
-        <div class="palette-mood">Adjust any of the five colors — they start from whatever you picked above</div>
+        <div class="palette-mood">Adjust any of the five colors. They start from whatever you picked above.</div>
         <div class="custom-color-rows" onclick="event.stopPropagation()">
           <div class="custom-color-row">
             <span>Background</span>
@@ -1268,6 +1268,10 @@ function selectOption(key, value, el) {
         accent3: p.colors[3], text: p.colors[4],
       };
     }
+    saveState();
+    renderCanvas();
+    renderStep();
+    return;
   }
   const parent = el.closest('.typo-grid, .palette-grid, .option-grid, .vis-grid');
   if (parent) parent.querySelectorAll('.typo-card,.palette-card,.option-card,.vis-card').forEach(c => c.classList.remove('selected'));
