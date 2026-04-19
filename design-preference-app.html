@@ -1,0 +1,1912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>So Tell Me What You Want: A Design Preference Profile by Paige Woods</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Crimson+Pro:wght@300;400&family=DM+Sans:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;1,400&family=IM+Fell+English:ital@0;1&family=Inter:wght@300;400;500&family=Jost:wght@300;400;500&family=Lato:wght@300;400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;1,400&family=Nunito+Sans:wght@300;400&family=Oswald:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;500&family=Source+Sans+3:wght@300;400&family=Source+Serif+4:wght@300;400&display=swap" rel="stylesheet" />
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#111111;--surface:#1C1C1C;--border:#3A3A3A;--border-dark:#FFFFFF;
+  --text:#F5F5F5;--text-mid:#C0C0C0;--text-light:#888888;
+  --selected-bg:#252525;--radius:12px;--radius-sm:6px;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+#app{display:flex;flex-direction:column;height:100%}
+@keyframes stepIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.step-animate{animation:stepIn 0.22s ease forwards}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;z-index:100;gap:16px}
+.topbar-brand{}
+.topbar-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:500;letter-spacing:0.01em}
+.topbar-sub{font-size:10px;font-weight:500;color:var(--text-light);letter-spacing:0.09em;text-transform:uppercase;margin-top:1px}
+.progress-wrap{display:flex;align-items:center;gap:14px}
+.progress-label{font-size:12px;color:var(--text-mid);font-weight:300;white-space:nowrap}
+.progress-track{width:160px;height:2px;background:var(--border);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--text);border-radius:2px;transition:width 0.5s ease}
+.progress-dots{display:flex;gap:5px;align-items:center}
+.pdot{width:5px;height:5px;border-radius:50%;background:var(--border);transition:all 0.3s ease}
+.pdot.done{background:var(--text)}
+.pdot.active{background:var(--text);transform:scale(1.5)}
+
+/* LAYOUT */
+.app-body{display:grid;grid-template-columns:1fr 2fr;flex:1;min-height:0;overflow:hidden}
+
+/* LEFT PANEL */
+.step-panel{padding:40px 32px 80px;border-right:1px solid var(--border);overflow-y:auto;height:100%}
+.step-eyebrow{font-size:10px;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-light);margin-bottom:10px}
+.step-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;line-height:1.2;letter-spacing:-0.01em;margin-bottom:10px}
+.step-desc{font-size:13px;font-weight:400;color:var(--text-mid);line-height:1.7;margin-bottom:28px}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;gap:10px;padding-top:4px}
+.btn-next{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;background:#FFFFFF;color:#111111;border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:0.03em;cursor:pointer;transition:opacity 0.15s}
+.btn-next:hover{opacity:0.82}
+.btn-back{display:inline-flex;align-items:center;gap:6px;padding:12px 18px;background:transparent;color:var(--text-mid);border:1px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;cursor:pointer;transition:all 0.15s}
+.btn-back:hover{border-color:var(--text);color:var(--text)}
+
+/* CHIPS */
+.chip-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+.chip{padding:9px 17px;border:1px solid var(--border);border-radius:100px;font-size:13px;color:var(--text-mid);cursor:pointer;transition:all 0.15s;background:var(--surface);user-select:none}
+.chip:hover{border-color:var(--text);color:var(--text)}
+.chip.selected{background:#FFFFFF;border-color:#FFFFFF;color:#111111}
+
+/* OPTION CARDS (layout/shape/border/motion/texture) */
+.option-grid{display:grid;grid-template-columns:1fr;gap:9px;margin-bottom:32px}
+.option-grid.two-col{grid-template-columns:1fr 1fr}
+.option-card{padding:20px;border:1.5px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:all 0.15s;background:var(--surface);position:relative}
+.option-card:hover{border-color:var(--text)}
+.option-card.selected{border-color:var(--text);background:var(--selected-bg)}
+.option-card.selected .ocheck{opacity:1}
+.option-name{font-size:14px;font-weight:500;color:var(--text);margin-bottom:5px;padding-right:24px}
+.option-desc{font-size:12px;font-weight:400;color:var(--text-mid);line-height:1.55}
+.ocheck{position:absolute;top:14px;right:14px;width:18px;height:18px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.15s;flex-shrink:0}
+.ocheck::after{content:'';width:6px;height:4px;border-left:1.5px solid #111;border-bottom:1.5px solid #111;transform:rotate(-45deg) translateY(-1px);display:block}
+
+/* CUSTOM COLOUR INPUTS */
+.custom-color-rows{display:flex;flex-direction:column;gap:10px;margin-top:14px;border-top:1px solid var(--border);padding-top:14px}
+.custom-color-row{display:flex;align-items:center;gap:10px}
+.custom-color-row span{font-size:11px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--text-light);width:72px;flex-shrink:0}
+.color-swatch-picker{width:34px;height:34px;padding:2px;border:1.5px solid var(--border);border-radius:5px;cursor:pointer;background:transparent;flex-shrink:0}
+.color-swatch-picker::-webkit-color-swatch-wrapper{padding:0;border-radius:2px}
+.color-swatch-picker::-webkit-color-swatch{border:none;border-radius:2px}
+.hex-input{flex:1;padding:8px 10px;background:transparent;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:var(--text);letter-spacing:0.05em;outline:none;transition:border-color 0.15s}
+.hex-input:focus{border-color:rgba(255,255,255,0.4)}
+.custom-preview-strip{display:flex;height:18px;border-radius:3px;overflow:hidden;margin-top:12px}
+.custom-preview-strip div{flex:1}
+
+/* ANIMATION STYLES */
+@keyframes photoDrift{0%{transform:scale(1.0) translate(0,0)}33%{transform:scale(1.05) translate(-6px,-3px)}66%{transform:scale(1.07) translate(4px,-6px)}100%{transform:scale(1.0) translate(0,0)}}
+@keyframes photoReveal{from{opacity:0;transform:translateY(20px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes headReveal{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:translateX(0)}}
+.anim-hover .hero-fullbleed img,.anim-hover .polaroid-card img,.anim-hover .split-img-half img,.anim-hover .floating-img img,.anim-hover .framed-box img{transition:transform 0.6s ease}
+.anim-hover .hero-fullbleed:hover img,.anim-hover .polaroid-card:hover img,.anim-hover .split-img-half:hover img,.anim-hover .floating-img:hover img,.anim-hover .framed-box:hover img{transform:scale(1.05)}
+.anim-hover .hero-btn:hover{transform:translateY(-5px)!important;box-shadow:0 16px 44px rgba(0,0,0,0.32)!important}
+.anim-reveal .hero-text{animation:headReveal 0.7s ease 0.1s both!important}
+.anim-reveal .polaroid-wrap,.anim-reveal .split-img-half,.anim-reveal .floating-img,.anim-reveal .framed-wrap{animation:photoReveal 0.9s ease 0.3s both!important}
+.anim-reveal .hero-fullbleed img{animation:photoReveal 1s ease 0.1s both!important}
+.anim-reveal .hero-cta-row{animation:heroIn 0.6s ease 0.5s both!important}
+.anim-kinetic .hero-fullbleed img,.anim-kinetic .polaroid-card img,.anim-kinetic .split-img-half img,.anim-kinetic .floating-img img,.anim-kinetic .framed-box img{animation:photoDrift 14s ease-in-out infinite;transform-origin:center center;overflow:hidden}
+.anim-kinetic .hero-btn{overflow:hidden}
+.anim-kinetic .hero-btn::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,0.22) 0%,transparent 65%);opacity:0;transform:scale(0.7);transition:opacity 0.45s ease,transform 0.45s ease}
+.anim-kinetic .hero-btn:hover::before{opacity:1;transform:scale(1.3)}
+.anim-kinetic .hero-btn:hover{transform:translateY(-6px)!important;box-shadow:0 20px 56px rgba(0,0,0,0.4)!important}
+
+/* BRAND NAME INPUT */
+.brand-name-field{margin-bottom:32px}
+.brand-name-label{font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-light);margin-bottom:10px;display:block}
+.brand-name-input{width:100%;padding:14px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:400;color:var(--text);outline:none;transition:border-color 0.15s;caret-color:var(--text)}
+.brand-name-input::placeholder{color:var(--text-light)}
+.brand-name-input:focus{border-color:rgba(255,255,255,0.5)}
+
+/* RECOMMENDED INDICATORS */
+.rec-badge{display:inline-block;font-size:9px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--text-light);border:1px solid var(--border);border-radius:100px;padding:2px 8px;margin-bottom:9px}
+.chip.rec:not(.selected){border-color:rgba(255,255,255,0.32);color:var(--text)}
+.rec-intro{font-size:11px;color:var(--text-light);font-style:italic;margin-bottom:18px;margin-top:-14px}
+
+/* TYPOGRAPHY CARDS */
+.typo-grid{display:grid;grid-template-columns:1fr;gap:9px;margin-bottom:32px}
+.typo-card{padding:22px 18px 18px;border:1.5px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:all 0.15s;background:var(--surface);position:relative}
+.typo-card:hover{border-color:var(--text)}
+.typo-card.selected{border-color:var(--text);background:var(--selected-bg)}
+.typo-card.selected .ocheck{opacity:1}
+.typo-label{font-size:10px;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-light);margin-bottom:10px}
+.typo-head{font-size:19px;line-height:1.2;margin-bottom:7px;color:var(--text)}
+.typo-body{font-size:11.5px;line-height:1.6;color:var(--text-mid);font-weight:400}
+.typo-desc{font-size:10.5px;color:var(--text-light);margin-top:10px;font-style:italic;border-top:1px solid var(--border);padding-top:8px}
+
+/* PALETTE CARDS */
+.palette-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:32px}
+.palette-card{padding:14px;border:1.5px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:all 0.15s;background:var(--surface);position:relative}
+.palette-card:hover{border-color:var(--text)}
+.palette-card.selected{border-color:var(--text);background:var(--selected-bg)}
+.palette-card.selected .ocheck{opacity:1}
+.palette-swatches{display:flex;height:26px;border-radius:5px;overflow:hidden;margin-bottom:9px}
+.palette-swatch{flex:1}
+.palette-name{font-size:13px;font-weight:500;color:var(--text)}
+.palette-mood{font-size:11px;font-weight:300;color:var(--text-light);font-style:italic;margin-top:2px}
+
+/* UPLOAD */
+.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:52px 28px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--surface);margin-bottom:14px;position:relative;overflow:hidden}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--text);background:var(--selected-bg)}
+.upload-zone img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.upload-icon{width:44px;height:44px;border:1.5px dashed var(--text-light);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:18px;color:var(--text-light)}
+.upload-title{font-size:14px;font-weight:400;color:var(--text);margin-bottom:5px}
+.upload-hint{font-size:12px;font-weight:300;color:var(--text-light)}
+.upload-skip{font-size:12px;font-weight:300;color:var(--text-light);text-align:center;cursor:pointer;text-decoration:underline;text-underline-offset:3px;display:block}
+.upload-skip:hover{color:var(--text)}
+.upload-remove{margin-top:12px;font-size:12px;color:var(--text-light);text-decoration:underline;cursor:pointer;display:none}
+.upload-remove:hover{color:var(--text)}
+
+/* WELCOME */
+.welcome-wrap{max-width:600px}
+.welcome-eyebrow{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-light);margin-bottom:18px}
+.welcome-title{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;line-height:1.07;letter-spacing:-0.02em;margin-bottom:8px}
+.welcome-title em{font-style:italic}
+.welcome-sub{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:300;color:var(--text-mid);font-style:italic;margin-bottom:36px}
+.welcome-body{font-size:14px;font-weight:400;color:var(--text-mid);line-height:1.8;max-width:460px;margin-bottom:10px}
+.welcome-note{font-size:13px;font-weight:400;color:var(--text-light);font-style:italic;margin-bottom:44px}
+.welcome-steps{padding:22px 24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);display:flex;flex-direction:column;gap:9px;margin-bottom:44px}
+.ws-item{display:flex;align-items:center;gap:13px;font-size:13px;color:var(--text-mid);font-weight:400}
+.ws-num{width:21px;height:21px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-light);flex-shrink:0}
+
+/* REVIEW */
+.review-grid{display:flex;flex-direction:column;gap:9px;margin-bottom:44px}
+.review-card{display:flex;align-items:flex-start;justify-content:space-between;padding:16px 18px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);gap:14px}
+.review-left{flex:1}
+.review-cat{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-light);margin-bottom:3px}
+.review-val{font-size:13px;color:var(--text);font-weight:400;line-height:1.4}
+.review-edit{font-size:12px;color:var(--text-light);text-decoration:underline;text-underline-offset:3px;cursor:pointer;flex-shrink:0;padding-top:1px}
+.review-edit:hover{color:var(--text)}
+
+/* SUMMARY MODE — full takeover */
+.app-body.summary-mode{grid-template-columns:1fr}
+.app-body.summary-mode .canvas-panel{display:none}
+.app-body.summary-mode .step-panel{padding:0;height:100%;overflow:hidden}
+
+/* SUMMARY SCREEN */
+.summary-screen{display:flex;flex-direction:column;height:100%}
+
+/* TOP 75% — display */
+.sd{flex:0 0 75%;min-height:0;display:flex;flex-direction:column;padding:0;overflow:hidden;background:var(--bg)}
+.sd-header{padding:32px 48px 20px;flex-shrink:0;display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+.sd-eyebrow{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-light);margin-bottom:6px}
+.sd-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:400;color:var(--text);line-height:1.1}
+.sd-voice-inline{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:var(--text-mid);max-width:400px;line-height:1.55;text-align:right}
+
+/* HORIZONTAL CARDS ROW */
+.sd-cards{flex:1;min-height:0;display:flex;gap:14px;padding:0 48px 28px;overflow-x:auto;overflow-y:hidden;scroll-behavior:smooth;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.sd-cards::-webkit-scrollbar{height:3px}
+.sd-cards::-webkit-scrollbar-track{background:transparent}
+.sd-cards::-webkit-scrollbar-thumb{background:#3A3A3A;border-radius:2px}
+
+/* INDIVIDUAL CARD */
+@keyframes cardSlideIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:translateX(0)}}
+.spc{flex:0 0 220px;height:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 20px;display:flex;flex-direction:column;gap:10px;scroll-snap-align:start;cursor:default;
+  opacity:0;animation:cardSlideIn 0.45s ease forwards;
+  transition:transform 0.25s ease,border-color 0.25s ease,box-shadow 0.25s ease}
+.spc:hover{transform:translateY(-6px);border-color:rgba(255,255,255,0.45);box-shadow:0 20px 56px rgba(0,0,0,0.7);z-index:2}
+.spc:nth-child(1){animation-delay:0.04s}
+.spc:nth-child(2){animation-delay:0.1s}
+.spc:nth-child(3){animation-delay:0.16s}
+.spc:nth-child(4){animation-delay:0.22s}
+.spc:nth-child(5){animation-delay:0.28s}
+.spc:nth-child(6){animation-delay:0.34s}
+.spc:nth-child(7){animation-delay:0.4s}
+.spc:nth-child(8){animation-delay:0.46s}
+.spc:nth-child(9){animation-delay:0.52s}
+.spc-cat{font-size:9px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-light)}
+.spc-val{font-size:13px;font-weight:400;color:var(--text);line-height:1.45;flex:1}
+.spc-detail{font-size:11px;font-weight:400;color:var(--text-mid);line-height:1.5;margin-top:auto}
+.spc-swatches{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.spc-swatch{width:22px;height:22px;border-radius:4px;flex-shrink:0}
+.spc-font-head{font-size:18px;line-height:1.2;color:var(--text);margin-top:4px}
+.spc-font-body{font-size:11px;line-height:1.55;color:var(--text-mid);margin-top:6px}
+.spc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.spc-tag{padding:2px 8px;border:1px solid var(--border);border-radius:100px;font-size:9px;letter-spacing:0.05em;color:var(--text-mid)}
+
+/* HERO MOCKUP */
+@keyframes heroIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.hero-mockup{width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;transition:background 0.5s ease}
+.hero-nav{display:flex;align-items:center;justify-content:space-between;padding:22px 56px;flex-shrink:0}
+.hero-nav-logo{font-size:17px;font-weight:500;letter-spacing:0.01em;transition:font-family 0.4s}
+.hero-nav-links{display:flex;gap:36px;font-size:12px;opacity:0.55;letter-spacing:0.04em}
+.hero-main{flex:1;min-height:0;display:flex;align-items:center;gap:56px;padding:0 56px 40px;overflow:hidden}
+.hero-text{flex:1;min-width:0;animation:heroIn 0.5s ease 0.1s both}
+.hero-eyebrow{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:20px;opacity:0.5}
+.hero-headline{line-height:1.0;font-weight:400;margin-bottom:22px;transition:font-family 0.4s,color 0.4s}
+.hero-body-copy{font-size:15px;line-height:1.75;max-width:460px;margin-bottom:36px;opacity:0.75;transition:font-family 0.4s}
+.hero-cta-row{display:flex;align-items:center;gap:20px}
+.hero-btn{display:inline-block;padding:14px 30px;font-size:13px;font-weight:500;cursor:default;letter-spacing:0.03em;transition:transform 0.22s ease,box-shadow 0.22s ease;position:relative;overflow:hidden}
+.hero-btn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0.12);opacity:0;transition:opacity 0.2s}
+.hero-btn:hover::after{opacity:1}
+.hero-btn:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,0.25)}
+.hero-btn-ghost{font-size:13px;opacity:0.55;cursor:default;border-bottom:1px solid currentColor;padding-bottom:1px;transition:opacity 0.2s}
+.hero-btn-ghost:hover{opacity:0.9}
+.hero-photo-wrap{flex:0 0 38%;min-height:0;animation:heroIn 0.5s ease 0.2s both;overflow:hidden}
+.hero-photo-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.25}
+
+/* ── LAYOUT 1: FULL BLEED ── */
+.hero-fullbleed{position:relative;overflow:hidden;flex:1;min-height:0}
+.hero-fullbleed img,.hero-fullbleed .fb-gradient{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-fullbleed .fb-scrim{position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.3) 55%, rgba(0,0,0,0.1) 100%)}
+.hero-fullbleed .hero-text{position:relative;z-index:2;padding:40px 64px;display:flex;flex-direction:column;justify-content:flex-end;height:100%}
+.hero-fullbleed .hero-text *{color:#FFFFFF!important}
+.hero-fullbleed .hero-btn{border:1.5px solid rgba(255,255,255,0.6)!important}
+.hero-fullbleed .hero-btn:hover{background:rgba(255,255,255,0.15)!important;border-color:#fff!important}
+
+/* ── LAYOUT 2: POLAROID ── */
+.hero-polaroid{flex:1;min-height:0;display:flex;align-items:center;gap:0}
+.hero-polaroid .hero-text{flex:1;min-width:0;padding:40px 48px}
+.polaroid-wrap{flex:0 0 auto;display:flex;align-items:center;justify-content:center;padding:0 48px 0 0}
+.polaroid-card{background:#FFFFFF;padding:13px 13px 48px;box-shadow:0 16px 56px rgba(0,0,0,0.35),0 4px 16px rgba(0,0,0,0.2);transform:rotate(-2.5deg);transition:transform 0.3s ease,box-shadow 0.3s ease;width:230px;flex-shrink:0}
+.polaroid-card:hover{transform:rotate(-1deg) translateY(-4px);box-shadow:0 28px 72px rgba(0,0,0,0.45)}
+.polaroid-card img,.polaroid-card .polar-ph{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+.polaroid-card .polar-ph{display:flex;align-items:center;justify-content:center;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#999;background:#f0f0f0}
+.polaroid-caption{font-family:'DM Sans',sans-serif;font-size:11px;text-align:center;color:#888;margin-top:10px;letter-spacing:0.04em}
+
+/* ── LAYOUT 3: CLEAN SPLIT ── */
+.hero-split{flex:1;min-height:0;display:flex;overflow:hidden}
+.hero-split .hero-text{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.split-img-half{flex:0 0 48%;overflow:hidden;position:relative}
+.split-img-half img{width:100%;height:100%;object-fit:cover;display:block}
+.split-img-half .split-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35}
+.split-divider{width:1px;flex-shrink:0;align-self:stretch}
+
+/* ── LAYOUT 4: FLOATING OVERLAP ── */
+.hero-floating{flex:1;min-height:0;position:relative;overflow:hidden;display:flex;align-items:center}
+.hero-floating .hero-text{flex:1;min-width:0;padding:40px 52px;position:relative;z-index:1}
+.floating-img{position:absolute;right:-20px;top:50%;transform:translateY(-52%) rotate(2.5deg);width:42%;z-index:2;border-radius:10px;overflow:hidden;box-shadow:0 24px 72px rgba(0,0,0,0.55),0 8px 24px rgba(0,0,0,0.3);transition:transform 0.35s ease}
+.floating-img:hover{transform:translateY(-54%) rotate(1deg) scale(1.02)}
+.floating-img img,.floating-img .float-ph{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.floating-img .float-ph{display:flex;align-items:center;justify-content:center;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.3}
+
+/* ── LAYOUT 5: ARCHITECTURAL FRAME ── */
+.hero-framed{flex:1;min-height:0;display:flex;align-items:center;gap:0}
+.hero-framed .hero-text{flex:1;min-width:0;padding:40px 48px}
+.framed-wrap{flex:0 0 auto;padding:0 52px 0 0;display:flex;align-items:center}
+.framed-box{padding:10px;flex-shrink:0}
+.framed-box img,.framed-box .frame-ph{width:260px;aspect-ratio:4/3;object-fit:cover;display:block}
+.framed-box .frame-ph{display:flex;align-items:center;justify-content:center;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.3}
+
+/* BOTTOM 25% — export bar (contrasting white) */
+.se{flex:0 0 25%;min-height:0;background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;padding:0 48px;gap:32px;border-top:1px solid #E0E0E0;margin-top:25px}
+.se-left{flex:1;min-width:0}
+.se-label{font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#888;margin-bottom:6px}
+.se-voice{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:#1A1A1A;line-height:1.55;max-width:520px}
+.se-actions{display:flex;gap:10px;flex-shrink:0;align-items:center}
+
+/* EXPORT BAR BUTTONS (on white) */
+.se-btn{display:inline-flex;align-items:center;gap:7px;padding:12px 22px;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid transparent;transition:all 0.2s ease;position:relative;overflow:hidden;letter-spacing:0.02em}
+.se-btn::after{content:'';position:absolute;inset:0;background:currentColor;opacity:0;transition:opacity 0.2s ease}
+.se-btn:hover::after{opacity:0.08}
+.se-btn.primary{background:#111111;color:#FFFFFF;border-color:#111111}
+.se-btn.primary:hover{background:#000;transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.3)}
+.se-btn.secondary{background:transparent;color:#111111;border-color:#C0C0C0}
+.se-btn.secondary:hover{border-color:#111111;transform:translateY(-2px)}
+.se-btn.ghost{background:transparent;color:#888;border-color:transparent;padding-left:0;padding-right:0}
+.se-btn.ghost:hover{color:#111111}
+.copy-confirm{font-size:11px;color:#888;font-style:italic;white-space:nowrap}
+
+/* RIGHT: CANVAS PANEL */
+.canvas-panel{background:var(--bg);height:100%;overflow:hidden;display:flex;flex-direction:column;padding:0}
+.canvas-top{flex:0 0 66.666%;min-height:0;overflow-y:auto;padding:40px 48px 20px;display:flex;flex-direction:column;gap:20px}
+.canvas-bottom{flex:0 0 33.333%;min-height:0;overflow-y:auto;border-top:1px solid var(--border);padding:16px 48px 20px}
+.canvas-section-label{font-size:10px;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-light)}
+
+/* CANVAS CARD */
+.canvas-card{background:#FFFFFF;border:1px solid #2E2E2E;border-radius:var(--radius);overflow:hidden;transition:border-radius 0.4s ease,border 0.4s ease,box-shadow 0.4s ease}
+.canvas-photo{width:100%;height:150px;background:#EDEAE4;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;transition:background 0.4s ease}
+.canvas-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.canvas-photo-ph{display:flex;flex-direction:column;align-items:center;gap:7px;color:var(--text-light);pointer-events:none}
+.canvas-photo-ph .icon{width:28px;height:28px;border:1.5px dashed var(--text-light);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.canvas-photo-ph span{font-size:10px;font-weight:300;letter-spacing:0.05em}
+.canvas-body{padding:18px;background:#FFFFFF;transition:background 0.4s ease,padding 0.4s ease}
+.canvas-tone-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;min-height:22px}
+.ctag{padding:2px 9px;border:1px solid #E0DDD8;border-radius:100px;font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:#888;transition:all 0.3s}
+.ctag.on{background:#1A1A1A;border-color:#1A1A1A;color:#fff}
+.canvas-headline{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;line-height:1.2;margin-bottom:6px;color:#1A1A1A;transition:font-family 0.3s,color 0.4s}
+.canvas-tagline{font-size:11.5px;font-weight:300;color:#6A6460;margin-bottom:12px;line-height:1.6;transition:font-family 0.3s,color 0.4s}
+.canvas-divider{height:1px;background:#E8E4DC;margin-bottom:12px;transition:all 0.4s}
+.canvas-palette-strip{display:flex;height:12px;border-radius:3px;overflow:hidden;margin-bottom:12px}
+.cps{flex:1;transition:background 0.4s}
+.canvas-cta{display:inline-block;padding:7px 14px;background:var(--text);color:#fff;border-radius:var(--radius-sm);font-size:10px;font-weight:500;letter-spacing:0.04em;transition:all 0.4s ease}
+
+/* RECAP LIST */
+.recap-label{font-size:10px;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-light);margin-bottom:8px}
+.recap-list{display:flex;flex-direction:column}
+.recap-item{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border);gap:10px}
+.recap-item:last-child{border-bottom:none}
+.recap-key{font-size:10px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-light);flex-shrink:0;padding-top:1px}
+.recap-val{font-size:11px;color:var(--text);text-align:right;font-weight:400;line-height:1.4}
+.recap-empty{font-size:11px;color:#666666;text-align:right;font-style:italic;font-weight:400}
+
+/* MOBILE */
+/* ═══════════════════ TABLET + MOBILE (≤860px) ═══════════════════ */
+@media(max-width:860px){
+
+  /* BASE */
+  html,body{overflow:auto}
+  #app{height:auto}
+
+  /* TOPBAR: hidden on mobile */
+  .topbar{display:none}
+
+  /* LAYOUT: single column */
+  .app-body{grid-template-columns:1fr;overflow:visible}
+
+  /* STEP PANEL */
+  .step-panel{height:auto;padding:28px 20px 68px;border-right:none;border-bottom:1px solid var(--border)}
+  .step-title{font-size:23px}
+  .step-desc{font-size:13px;margin-bottom:22px}
+  .welcome-title{font-size:27px}
+  .welcome-sub{font-size:16px}
+  .welcome-body,.welcome-note{font-size:13px}
+  .welcome-steps{padding:16px 18px;gap:8px}
+  .ws-item{font-size:12px}
+
+  /* NAV BUTTONS: stack, next on top */
+  .nav-row{flex-direction:column;gap:8px}
+  .btn-next{order:1;width:100%;justify-content:center}
+  .btn-back{order:2;width:100%;justify-content:center}
+
+  /* CHIPS */
+  .chip{font-size:12px;padding:8px 14px}
+
+  /* OPTION / BUSINESS TYPE GRID */
+  .option-grid.two-col{grid-template-columns:1fr}
+
+  /* PALETTE */
+  .palette-grid{grid-template-columns:1fr 1fr}
+
+  /* CANVAS PANEL: show preview card, hide recap */
+  .canvas-panel{height:auto;border-top:1px solid var(--border)}
+  .canvas-top{flex:none;height:auto;padding:16px 20px 20px}
+  .canvas-section-label{display:none}
+  .canvas-bottom{display:none}
+
+  /* WELCOME SCREEN: title + sub + card + CTA only */
+  .welcome-body,.welcome-note,.welcome-steps{display:none}
+
+  /* SUMMARY: full-screen fixed overlay */
+  .app-body.summary-mode .step-panel{
+    position:fixed;inset:0;z-index:200;
+    height:100vh;height:100dvh;
+    padding:0;overflow:hidden;border:none;
+  }
+  .summary-screen{height:100vh;height:100dvh;flex-direction:column}
+  .sd{flex:0 0 68%;overflow:hidden}
+  .se{
+    flex:0 0 32%;padding:14px 20px;
+    overflow-y:auto;flex-direction:column;
+    align-items:flex-start;gap:10px;
+  }
+  .se-left{min-width:0;width:100%}
+  .se-label{font-size:8px;margin-bottom:3px}
+  .se-voice{font-size:12px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .se-actions{width:100%;flex-wrap:wrap;gap:7px}
+  .se-btn{flex:1;min-width:calc(50% - 4px);justify-content:center;padding:10px 12px;font-size:11px}
+  .se-btn.ghost{flex:0 0 auto;font-size:11px}
+  .copy-confirm{font-size:10px}
+
+  /* HERO NAV (inside mockup) */
+  .hero-nav{padding:12px 20px;flex-shrink:0}
+  .hero-nav-links{display:none}
+
+  /* HERO TEXT SCALING */
+  .hero-headline{font-size:28px!important;line-height:1.05;margin-bottom:12px}
+  .hero-body-copy{font-size:12px!important;line-height:1.6;margin-bottom:18px;
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .hero-eyebrow{margin-bottom:10px}
+  .hero-btn{padding:10px 18px;font-size:11px}
+  .hero-btn-ghost{font-size:11px}
+  .hero-cta-row{gap:12px;flex-wrap:wrap}
+
+  /* ── FULL BLEED: tighten padding ── */
+  .hero-fullbleed .hero-text{padding:18px 20px 22px}
+
+  /* ── SPLIT: stack — image on top, text below ── */
+  .hero-split{flex-direction:column-reverse;overflow-y:auto}
+  .hero-split .hero-text{padding:16px 20px 18px;flex:none}
+  .split-divider{display:none}
+  .split-img-half{flex:0 0 160px;width:100%}
+
+  /* ── POLAROID: text top, card below ── */
+  .hero-polaroid{flex-direction:column;align-items:flex-start;overflow-y:auto}
+  .hero-polaroid .hero-text{padding:16px 20px 10px;flex:none}
+  .polaroid-wrap{padding:0 0 16px 20px;flex:none;justify-content:flex-start}
+  .polaroid-card{width:150px;transform:rotate(-1.5deg)}
+
+  /* ── FLOATING: collapse to stacked ── */
+  .hero-floating{flex-direction:column;align-items:flex-start;overflow-y:auto}
+  .hero-floating .hero-text{padding:16px 20px 10px;flex:none;position:static;z-index:auto}
+  .floating-img{
+    position:static;transform:none!important;
+    width:calc(100% - 40px);margin:0 20px 16px;
+    border-radius:8px;z-index:auto;
+    box-shadow:0 10px 32px rgba(0,0,0,0.35);
+  }
+  .floating-img:hover{transform:none!important}
+
+  /* ── FRAMED: stack ── */
+  .hero-framed{flex-direction:column;align-items:flex-start;overflow-y:auto}
+  .hero-framed .hero-text{padding:16px 20px 10px;flex:none}
+  .framed-wrap{padding:0 0 16px 20px;flex:none}
+  .framed-box img,.framed-box .frame-ph{width:min(240px,calc(100vw - 80px))}
+}
+
+/* ═══════════════════ SMALL PHONES (≤480px) ═══════════════════ */
+@media(max-width:480px){
+  .topbar-sub{display:none}
+  .topbar-title{font-size:16px}
+  .step-title{font-size:20px}
+  .palette-grid{grid-template-columns:1fr}
+  .sd{flex:0 0 63%}
+  .se{flex:0 0 37%}
+  .hero-headline{font-size:22px!important}
+  .hero-body-copy{-webkit-line-clamp:2}
+  .se-btn{min-width:calc(50% - 4px)}
+}
+
+/* PRINT */
+@media print{
+  .topbar,.step-panel,.canvas-panel,.nav-row,.export-row{display:none!important}
+  body{background:#fff}
+  .print-summary{display:block!important;padding:32px;font-family:'DM Sans',sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .print-summary *{animation:none!important;transition:none!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .print-summary .hero-fullbleed img,.print-summary .polaroid-card img,
+  .print-summary .split-img-half img,.print-summary .floating-img img,
+  .print-summary .framed-box img{animation:none!important;transform:none!important}
+}
+.print-summary{display:none}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- TOPBAR -->
+<header class="topbar" id="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-title">Tell Me Everything</div>
+    <div class="topbar-sub">A Design Preference Profile by Paige Woods</div>
+  </div>
+  <div class="progress-wrap" id="progress-wrap">
+    <span class="progress-label" id="progress-label">Welcome</span>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <div class="progress-dots" id="progress-dots"></div>
+  </div>
+  <button onclick="devPDF()" style="padding:7px 14px;background:transparent;border:1px dashed #555;border-radius:5px;color:#888;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.05em;cursor:pointer;flex-shrink:0" title="Dev shortcut: preview PDF with sample data">↗ PDF Preview</button>
+</header>
+
+<!-- BODY -->
+<div class="app-body">
+
+  <!-- LEFT: STEP PANEL -->
+  <section class="step-panel" id="step-panel"></section>
+
+  <!-- RIGHT: CANVAS PANEL -->
+  <aside class="canvas-panel">
+    <div class="canvas-top">
+      <div class="canvas-section-label">Your Design Profile, Live</div>
+      <div class="canvas-card" id="canvas-card">
+        <div class="canvas-photo" id="canvas-photo">
+          <div class="canvas-photo-ph" id="canvas-photo-ph">
+            <div class="icon">+</div>
+            <span>Brand photo will appear here</span>
+          </div>
+        </div>
+        <div class="canvas-body" id="canvas-body">
+          <div class="canvas-tone-tags" id="canvas-tone-tags">
+            <div class="ctag">+ tone</div>
+          </div>
+          <div class="canvas-headline" id="canvas-headline">Your Brand, Defined</div>
+          <div class="canvas-tagline" id="canvas-tagline">A quiet authority in every detail. The work speaks before the words do.</div>
+          <div class="canvas-divider" id="canvas-divider"></div>
+          <div class="canvas-palette-strip" id="canvas-palette-strip">
+            <div class="cps" style="background:#E8E4DC"></div>
+            <div class="cps" style="background:#C8C4BC"></div>
+            <div class="cps" style="background:#A8A4A0"></div>
+          </div>
+          <div class="canvas-cta" id="canvas-cta">See the work</div>
+        </div>
+      </div>
+    </div>
+    <div class="canvas-bottom">
+      <div class="recap-label">Selections so far</div>
+      <div class="recap-list" id="recap-list"></div>
+    </div>
+  </aside>
+
+</div><!-- /app-body -->
+</div><!-- /app -->
+
+<!-- PRINT SUMMARY (hidden unless printing) -->
+<div class="print-summary" id="print-summary"></div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────
+
+const TONE_OPTIONS = [
+  'Calm','Bold','Playful','Refined','Warm','Minimal','Moody','Airy',
+  'Grounded','Luxurious','Editorial','Rustic','Romantic','Crisp',
+  'Approachable','Sophisticated','Raw','Whimsical','Timeless','Modern'
+];
+
+const TYPOGRAPHY_OPTIONS = [
+  {id:'editorialist',name:'The Editorialist',descriptor:'Refined, literary, deeply considered',
+   headFont:"'Cormorant Garamond', serif",bodyFont:"'Cormorant Garamond', serif",
+   headWeight:'400',bodyWeight:'300',headSize:'20px',
+   sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
+  {id:'broadsheet',name:'Classic Broadsheet',descriptor:'Trusted, bookish, warm authority',
+   headFont:"'Playfair Display', serif",bodyFont:"'Lora', serif",
+   headWeight:'400',bodyWeight:'400',headSize:'19px',
+   sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
+  {id:'modern',name:'Studio Modern',descriptor:'Clean, direct, confidently minimal',
+   headFont:"'DM Sans', sans-serif",bodyFont:"'DM Sans', sans-serif",
+   headWeight:'500',bodyWeight:'300',headSize:'19px',
+   sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
+  {id:'fashion',name:'Fashion Forward',descriptor:'Elegant headline, invisible body',
+   headFont:"'Cormorant Garamond', serif",bodyFont:"'Inter', sans-serif",
+   headWeight:'300',bodyWeight:'300',headSize:'22px',
+   sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
+  {id:'luxury',name:'High Contrast Luxury',descriptor:'Drama in the headline, substance in the copy',
+   headFont:"'IM Fell English', serif",bodyFont:"'Source Serif 4', serif",
+   headWeight:'400',bodyWeight:'300',headSize:'19px',
+   sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
+  {id:'condensed',name:'Power Condensed',descriptor:'Bold, architectural, strong presence',
+   headFont:"'Oswald', sans-serif",bodyFont:"'Inter', sans-serif",
+   headWeight:'500',bodyWeight:'300',headSize:'20px',
+   sampleHead:'YOUR BRAND, DEFINED',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
+  {id:'refined',name:'Quiet Refinement',descriptor:'Understated, intelligent, airy',
+   headFont:"'Libre Baskerville', serif",bodyFont:"'Source Sans 3', sans-serif",
+   headWeight:'400',bodyWeight:'300',headSize:'18px',
+   sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
+  {id:'artful',name:'Artful & Alive',descriptor:'Personality-forward, expressive',
+   headFont:"'Abril Fatface', serif",bodyFont:"'Lato', sans-serif",
+   headWeight:'400',bodyWeight:'300',headSize:'19px',
+   sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
+  {id:'contemporary',name:'Cool & Contemporary',descriptor:'Geometric cool, consistent weight',
+   headFont:"'Raleway', sans-serif",bodyFont:"'Raleway', sans-serif",
+   headWeight:'500',bodyWeight:'300',headSize:'19px',
+   sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
+  {id:'literary',name:'The Literary',descriptor:'Timeless, serious, deeply readable',
+   headFont:"'EB Garamond', serif",bodyFont:"'EB Garamond', serif",
+   headWeight:'400',bodyWeight:'400',headSize:'21px',
+   sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
+  {id:'natural',name:'Minimal Natural',descriptor:'Organic minimalism, warm neutrality',
+   headFont:"'Jost', sans-serif",bodyFont:"'Jost', sans-serif",
+   headWeight:'400',bodyWeight:'300',headSize:'19px',
+   sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
+  {id:'softeditorial',name:'Soft Editorial',descriptor:'Approachable editorial, gentle authority',
+   headFont:"'Crimson Pro', serif",bodyFont:"'Nunito Sans', sans-serif",
+   headWeight:'400',bodyWeight:'300',headSize:'20px',
+   sampleHead:'Your Brand, Defined',sampleBody:'A quiet authority in every detail. The work speaks before the words do.'},
+];
+
+const BUSINESS_TYPES = [
+  {id:'creative', name:'Creative Studio or Agency',
+   desc:'Design, photography, art direction, branding, or any creative practice',
+   recommendedTone:['Editorial','Refined','Bold','Minimal','Sophisticated','Modern','Moody'],
+   recommendedTypo:['editorialist','modern','fashion','luxury','condensed'],
+   recommendedPalette:['monochrome','soft-editorial','cool-contemporary','gallery','ink-shell']},
+  {id:'product', name:'Product or Shop',
+   desc:'E-commerce, retail, maker brand, or any product-based business',
+   recommendedTone:['Warm','Approachable','Bold','Crisp','Modern','Playful','Timeless'],
+   recommendedTypo:['modern','contemporary','natural','softeditorial'],
+   recommendedPalette:['warm-neutrals','clay-linen','botanical','terracotta','desert']},
+  {id:'service', name:'Service or Professional Practice',
+   desc:'Consulting, coaching, law, finance, or expertise-led services',
+   recommendedTone:['Refined','Calm','Sophisticated','Timeless','Grounded','Minimal'],
+   recommendedTypo:['broadsheet','refined','literary','softeditorial'],
+   recommendedPalette:['warm-neutrals','forest-stone','cool-contemporary','minimal-natural','gallery']},
+  {id:'hospitality', name:'Hospitality or Food',
+   desc:'Restaurant, cafe, hotel, travel, or any experience-led brand',
+   recommendedTone:['Warm','Luxurious','Romantic','Grounded','Airy','Rustic'],
+   recommendedTypo:['editorialist','broadsheet','softeditorial','literary'],
+   recommendedPalette:['earthy','clay-linen','desert','terracotta','ochre-smoke','luxury-deep']},
+  {id:'wellness', name:'Health or Wellness',
+   desc:'Spa, fitness, therapy, beauty, or health-focused brand',
+   recommendedTone:['Calm','Airy','Warm','Minimal','Approachable','Grounded'],
+   recommendedTypo:['softeditorial','refined','natural','contemporary'],
+   recommendedPalette:['sage-cream','coastal','botanical','minimal-natural','dusky']},
+  {id:'personal', name:'Personal Brand or Portfolio',
+   desc:'Speaker, author, educator, freelancer, or individual creative professional',
+   recommendedTone:['Refined','Bold','Minimal','Editorial','Modern','Timeless'],
+   recommendedTypo:['editorialist','fashion','modern','literary'],
+   recommendedPalette:['monochrome','soft-editorial','gallery','bw-sand','ink-shell']},
+];
+
+const PALETTE_OPTIONS = [
+  {id:'monochrome',name:'Pure Monochrome',colors:['#000000','#1A1A1A','#888888','#CCCCCC','#F5F5F5','#FFFFFF'],descriptor:'Stark, decisive, graphic',canvasBg:'#F5F5F5',canvasText:'#1A1A1A',canvasAccent:'#000000',bgName:'Chalk',textName:'Soot',accentName:'Jet',photo:'https://picsum.photos/seed/monochrome/1200/800'},
+  {id:'warm-neutrals',name:'Warm Neutrals',colors:['#FAF0E6','#EDE0D0','#C9A98A','#8C6B4A','#4A3728'],descriptor:'Grounding, honest, quiet luxury',canvasBg:'#FAF0E6',canvasText:'#3A2E24',canvasAccent:'#8C6B4A',bgName:'Soft Sand',textName:'Tobacco',accentName:'Leather',photo:'https://picsum.photos/seed/warm-neutrals/1200/800'},
+  {id:'earthy',name:'Earthy Grounded',colors:['#3D2B1F','#7A5C44','#B38B6D','#DEC5A8','#F0E8DC'],descriptor:'Rooted, tactile, organic',canvasBg:'#F0E8DC',canvasText:'#3D2B1F',canvasAccent:'#7A5C44',bgName:'Linen',textName:'Espresso',accentName:'Bark',photo:'https://picsum.photos/seed/earthy/1200/800'},
+  {id:'coastal',name:'Coastal Muted',colors:['#D4DFE6','#A8BEC9','#6E9BAD','#4A7A8A','#2E5564'],descriptor:'Calm, open, unhurried',canvasBg:'#D4DFE6',canvasText:'#2E5564',canvasAccent:'#4A7A8A',bgName:'Sea Mist',textName:'Deep Water',accentName:'Harbour',photo:'https://picsum.photos/seed/coastal/1200/800'},
+  {id:'luxury-deep',name:'Luxury Deep',colors:['#1A0A00','#2C1810','#8B4513','#D4A574','#F5DEB3'],descriptor:'Rich, velvety, ceremonial',canvasBg:'#F5DEB3',canvasText:'#1A0A00',canvasAccent:'#8B4513',bgName:'Parchment',textName:'Dark Oak',accentName:'Cognac',photo:'https://picsum.photos/seed/luxury-deep/1200/800'},
+  {id:'botanical',name:'Botanical Muted',colors:['#4A5240','#7A8C6E','#A8B89A','#D4DCC8','#F2F0EA'],descriptor:'Grounded, alive, considered',canvasBg:'#F2F0EA',canvasText:'#4A5240',canvasAccent:'#7A8C6E',bgName:'Bone',textName:'Thicket',accentName:'Sage',photo:'https://picsum.photos/seed/botanical/1200/800'},
+  {id:'soft-editorial',name:'Soft Editorial',colors:['#F9F6F2','#EDE8E0','#C8B89A','#8A7560','#3A2E24'],descriptor:'Clean, cultured, warm',canvasBg:'#F9F6F2',canvasText:'#3A2E24',canvasAccent:'#8A7560',bgName:'Ivory',textName:'Dark Roast',accentName:'Driftwood',photo:'https://picsum.photos/seed/soft-editorial/1200/800'},
+  {id:'desert',name:'Desert Sunwashed',colors:['#E8D5B0','#D4AA7D','#B8855A','#8C5E35','#5C3A1A'],descriptor:'Warm, faded, sun-baked',canvasBg:'#E8D5B0',canvasText:'#5C3A1A',canvasAccent:'#B8855A',bgName:'Dune',textName:'Adobe',accentName:'Canyon',photo:'https://picsum.photos/seed/desert/1200/800'},
+  {id:'vintage',name:'Vintage Faded',colors:['#D4C5B0','#B8A88A','#9C8C70','#7A6C56','#4A3E2E'],descriptor:'Nostalgic, worn, beautiful',canvasBg:'#D4C5B0',canvasText:'#4A3E2E',canvasAccent:'#9C8C70',bgName:'Antique',textName:'Umber',accentName:'Flax',photo:'https://picsum.photos/seed/vintage/1200/800'},
+  {id:'jewel',name:'Jewel Toned',colors:['#1A1040','#2E1F78','#6B3FA0','#A855B5','#E040DB'],descriptor:'Saturated, unexpected, confident',canvasBg:'#F5F0FF',canvasText:'#1A1040',canvasAccent:'#6B3FA0',bgName:'Moonstone',textName:'Midnight',accentName:'Amethyst',photo:'https://picsum.photos/seed/jewel/1200/800'},
+  {id:'bold-contrast',name:'Bold Contrast',colors:['#FFFFFF','#000000','#FF3333','#1A1A1A','#F5F5F5'],descriptor:'High energy, decisive, arresting',canvasBg:'#FFFFFF',canvasText:'#000000',canvasAccent:'#FF3333',bgName:'White',textName:'Black',accentName:'Signal Red',photo:'https://picsum.photos/seed/bold-contrast/1200/800'},
+  {id:'minimal-natural',name:'Minimal Natural',colors:['#F8F4EE','#E8E0D4','#C4B8A8','#8C7E6E','#3C3028'],descriptor:'Pure, honest, breathable',canvasBg:'#F8F4EE',canvasText:'#3C3028',canvasAccent:'#8C7E6E',bgName:'Rice Paper',textName:'Walnut',accentName:'Putty',photo:'https://picsum.photos/seed/minimal-natural/1200/800'},
+  {id:'clay-linen',name:'Clay & Linen',colors:['#F5EBE0','#E8D5C4','#C8A882','#A07850','#6A4A2A'],descriptor:'Textured, craft-forward, warm',canvasBg:'#F5EBE0',canvasText:'#6A4A2A',canvasAccent:'#A07850',bgName:'Bisque',textName:'Chestnut',accentName:'Clay',photo:'https://picsum.photos/seed/clay-linen/1200/800'},
+  {id:'forest-stone',name:'Forest & Stone',colors:['#2A3828','#4A6240','#7A9468','#B4C8A8','#E8EDE4'],descriptor:'Still, deep, enduring',canvasBg:'#E8EDE4',canvasText:'#2A3828',canvasAccent:'#4A6240',bgName:'Lichen',textName:'Deep Moss',accentName:'Ivy',photo:'https://picsum.photos/seed/forest-stone/1200/800'},
+  {id:'dusky',name:'Dusky Romantic',colors:['#3A2840','#6A4060','#A06080','#D4A0B4','#F0E0E8'],descriptor:'Tender, moody, poetic',canvasBg:'#F0E0E8',canvasText:'#3A2840',canvasAccent:'#A06080',bgName:'Rose Quartz',textName:'Nightshade',accentName:'Mauve',photo:'https://picsum.photos/seed/dusky/1200/800'},
+  {id:'cool-contemporary',name:'Cool Contemporary',colors:['#E8EDF2','#C4D0DC','#8A9FB0','#506070','#283038'],descriptor:'Composed, precise, architectural',canvasBg:'#E8EDF2',canvasText:'#283038',canvasAccent:'#506070',bgName:'Cloud',textName:'Slate',accentName:'Steel',photo:'https://picsum.photos/seed/cool-contemporary/1200/800'},
+  {id:'bw-sand',name:'Black, White & Sand',colors:['#FFFFFF','#F5EDD8','#C8B898','#1A1A1A','#000000'],descriptor:'Classic, clean, anchored',canvasBg:'#F5EDD8',canvasText:'#1A1A1A',canvasAccent:'#000000',bgName:'Sand',textName:'Graphite',accentName:'Pitch',photo:'https://picsum.photos/seed/bw-sand/1200/800'},
+  {id:'gallery',name:'Gallery Neutrals',colors:['#FAFAF8','#F0EDE8','#D8D0C4','#9C9288','#4A4440'],descriptor:'Museum-quiet, discerning',canvasBg:'#FAFAF8',canvasText:'#4A4440',canvasAccent:'#9C9288',bgName:'Gallery White',textName:'Pewter',accentName:'Warm Grey',photo:'https://picsum.photos/seed/gallery/1200/800'},
+  {id:'ochre-smoke',name:'Ochre & Smoke',colors:['#E8C84A','#C8A830','#888070','#484038','#1A1810'],descriptor:'Charged, atmospheric, golden',canvasBg:'#F8F0D0',canvasText:'#1A1810',canvasAccent:'#C8A830',bgName:'Buttermilk',textName:'Cinder',accentName:'Ochre',photo:'https://picsum.photos/seed/ochre-smoke/1200/800'},
+  {id:'ink-shell',name:'Deep Ink & Shell',colors:['#1A1220','#3A2840','#F0E8DC','#E8D4C0','#FDFAF6'],descriptor:'Dramatic contrast, night and paper',canvasBg:'#FDFAF6',canvasText:'#1A1220',canvasAccent:'#3A2840',bgName:'Shell',textName:'Ink',accentName:'Aubergine',photo:'https://picsum.photos/seed/ink-shell/1200/800'},
+  {id:'sage-cream',name:'Sage & Cream',colors:['#F4F1E8','#C8D4BC','#8CA870','#5A7850','#2A4030'],descriptor:'Quiet, herbal, contemporary',canvasBg:'#F4F1E8',canvasText:'#2A4030',canvasAccent:'#5A7850',bgName:'Cream',textName:'Woodland',accentName:'Fern',photo:'https://picsum.photos/seed/sage-cream/1200/800'},
+  {id:'terracotta',name:'Terracotta & White',colors:['#FFFFFF','#F5E8DC','#D4886A','#A05A3A','#5A2A18'],descriptor:'Alive, Mediterranean, confident',canvasBg:'#F5E8DC',canvasText:'#5A2A18',canvasAccent:'#D4886A',bgName:'Peach Blush',textName:'Burnt Clay',accentName:'Terracotta',photo:'https://picsum.photos/seed/terracotta/1200/800'},
+];
+
+const LAYOUT_OPTIONS = [
+  {id:'spacious',name:'Spacious & Open',desc:'Generous margins, content floats, breathing room is intentional'},
+  {id:'balanced',name:'Balanced & Structured',desc:'Clear grid, consistent rhythm, nothing wastes space'},
+  {id:'dense',name:'Dense & Rich',desc:'Maximum content per view, editorial intensity, layered'},
+];
+
+const SHAPE_OPTIONS = [
+  {id:'sharp',name:'Sharp & Geometric',desc:'Right angles, hard edges, architectural precision'},
+  {id:'soft',name:'Soft & Organic',desc:'Rounded corners, fluid curves, gentle forms'},
+  {id:'mixed',name:'Mixed & Balanced',desc:'Structure with softness, intentional contrast'},
+];
+
+const BORDER_OPTIONS = [
+  {id:'minimal',name:'Minimal',desc:'Almost no lines. Space does the work.'},
+  {id:'structured',name:'Structured',desc:'Clean dividers and subtle rules that organize'},
+  {id:'editorial',name:'Strong Editorial',desc:'Prominent lines used as design elements'},
+  {id:'bold',name:'Bold Framing',desc:'Heavy borders, contained sections, graphic impact'},
+];
+
+const MOTION_OPTIONS = [
+  {id:'still',name:'Still & Minimal',desc:'Essentially no animation. Static and deliberate.'},
+  {id:'subtle',name:'Subtle Feedback',desc:'Microinteractions only: hover states, gentle fades'},
+  {id:'expressive',name:'Expressive & Restrained',desc:'Purposeful transitions that enhance without distracting'},
+];
+
+const TEXTURE_OPTIONS = [
+  {id:'clean',name:'Clean & Plain',desc:'No texture, flat color, pure form'},
+  {id:'subtle',name:'Subtle Texture',desc:'Barely-there grain, gentle paper feel'},
+  {id:'layered',name:'Layered Editorial',desc:'Visible texture, pattern used as a compositional element'},
+];
+
+const ANIM_OPTIONS = [
+  {id:'none',    name:'No Animations',    desc:'Clean and still. No movement, no transitions. Everything holds its position.'},
+  {id:'hover',   name:'Hover Only',       desc:'Buttons lift and the photo scales gently on hover. Responsive, not showy.'},
+  {id:'reveal',  name:'Entrance Reveal',  desc:'Content and image slide into view on load with staggered timing. A considered entrance.'},
+  {id:'kinetic', name:'Kinetic',          desc:'Photo drifts continuously. Buttons ripple on hover. Immersive and alive.'},
+];
+
+const HARD_NO_OPTIONS = [
+  'Busy backgrounds','Drop shadows','Gradients','Neon or highly saturated colors',
+  'Overly rounded "bubbly" shapes','Stock photography feel','Cluttered navigation',
+  'Flashy animations','Trendy novelty fonts','Centered body text',
+  'Auto-playing media','Too many typefaces','Comic or casual fonts',
+  'Generic corporate look','Heavy use of icons',
+];
+
+// ─── STATE ──────────────────────────────────────────────────────────
+const STATE_KEY = 'tme_session';
+
+const defaultState = () => ({
+  currentStep: 0,
+  selections: {
+    businessType: null, brandName: '', brandPhoto: null, tone: [],
+    typography: null, palette: null,
+    customColors: {bg:'#F9F6F2', text:'#3A2E24', accent:'#8A7560'},
+    layout: null, shape: null, border: null, motion: null,
+    texture: null, animStyle: null, hardNos: [],
+  }
+});
+
+function saveState() {
+  try {
+    sessionStorage.setItem(STATE_KEY, JSON.stringify(state));
+  } catch(e) {
+    // quota exceeded (large photo) — save without photo
+    try {
+      const slim = JSON.parse(JSON.stringify(state));
+      slim.selections.brandPhoto = null;
+      sessionStorage.setItem(STATE_KEY, JSON.stringify(slim));
+    } catch(_) {}
+  }
+}
+
+function loadState() {
+  try {
+    const saved = sessionStorage.getItem(STATE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      state.currentStep  = parsed.currentStep  ?? 0;
+      state.selections   = Object.assign(defaultState().selections, parsed.selections || {});
+    }
+  } catch(_) {}
+}
+
+const state = defaultState();
+
+// step index to key mapping
+const STEP_KEYS = [null,'businessType',null,'tone','typography','palette','layout','shape','border','motion','texture','animStyle','hardNos',null,null];
+const TOTAL_PREF_STEPS = 12; // steps 1-10
+
+// ─── PROGRESS ───────────────────────────────────────────────────────
+function updateProgress() {
+  const s = state.currentStep;
+  const labels = ['Welcome','Your business','Upload your brand','Emotional tone','Typography','Colour palette',
+    'Layout & spacing','Shape & edge','Borders & lines','Motion','Texture & pattern',
+    'Animation style','Hard no\'s','Review','Your profile'];
+
+  document.getElementById('progress-label').textContent = labels[s] || '';
+
+  const pct = s <= 0 ? 0 : s >= 14 ? 100 : Math.round((s / 14) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  // dots for steps 1-12
+  let dotsHtml = '';
+  for (let i = 1; i <= 12; i++) {
+    const cls = i < s ? 'done' : i === s ? 'active' : '';
+    dotsHtml += `<div class="pdot ${cls}"></div>`;
+  }
+  document.getElementById('progress-dots').innerHTML = dotsHtml;
+}
+
+// ─── RENDER STEP ────────────────────────────────────────────────────
+function renderStep() {
+  const panel = document.getElementById('step-panel');
+  const body = document.querySelector('.app-body');
+  body.classList.toggle('summary-mode', state.currentStep === 14);
+  panel.classList.remove('step-animate');
+  void panel.offsetWidth;
+  panel.classList.add('step-animate');
+  panel.scrollTop = 0;
+  updateProgress();
+
+  switch(state.currentStep) {
+    case 0:  panel.innerHTML = renderWelcome(); break;
+    case 1:  panel.innerHTML = renderBusinessType(); break;
+    case 2:  panel.innerHTML = renderUpload(); setupUpload(); break;
+    case 3:  panel.innerHTML = renderTone(); break;
+    case 4:  panel.innerHTML = renderTypography(); break;
+    case 5:  panel.innerHTML = renderPalette(); break;
+    case 6:  panel.innerHTML = renderOptions('Layout & Spacing','How should your space feel?','Choose how your design breathes.',LAYOUT_OPTIONS,'layout',false); break;
+    case 7:  panel.innerHTML = renderOptions('Shape & Edge','Sharp or soft?','This shapes everything from buttons to images to how sections meet.',SHAPE_OPTIONS,'shape',false); break;
+    case 8:  panel.innerHTML = renderOptions('Borders & Lines','How visible is the structure?','Lines can anchor, divide, or disappear entirely.',BORDER_OPTIONS,'border',true); break;
+    case 9:  panel.innerHTML = renderOptions('Motion & Interaction','How much should things move?','Even subtle motion carries a personality.',MOTION_OPTIONS,'motion',false); break;
+    case 10: panel.innerHTML = renderOptions('Texture & Pattern','How layered should the surfaces be?','Texture can add depth, or you may want none at all.',TEXTURE_OPTIONS,'texture',false); break;
+    case 11: panel.innerHTML = renderOptions('Animation Style','How should things move and reveal?','Choose what happens when the page loads and when the user interacts.',ANIM_OPTIONS,'animStyle',false); break;
+    case 12: panel.innerHTML = renderHardNos(); break;
+    case 13: panel.innerHTML = renderReview(); break;
+    case 14: panel.innerHTML = renderSummary(); break;
+  }
+}
+
+// ─── WELCOME ────────────────────────────────────────────────────────
+function renderWelcome() {
+  return `
+    <div class="welcome-wrap">
+      <div class="welcome-eyebrow">Welcome</div>
+      <h1 class="welcome-title">Tell Me <em>Everything.</em></h1>
+      <p class="welcome-sub">A design preference profile by Paige Woods</p>
+      <p class="welcome-body">
+        This is a guided conversation about taste. We'll work through a series of visual preference questions together, one step at a time, until we have a clear, usable picture of exactly what your brand should feel like.
+      </p>
+      <p class="welcome-note">Nothing is final. You can go back and change any choice at any time.</p>
+      <div class="welcome-steps">
+        <div class="ws-item"><div class="ws-num">1</div>Tell me what kind of business this is for</div>
+        <div class="ws-item"><div class="ws-num">2</div>Upload a brand or product photo (optional)</div>
+        <div class="ws-item"><div class="ws-num">3</div>Choose your emotional tone</div>
+        <div class="ws-item"><div class="ws-num">4</div>Pick a typography direction</div>
+        <div class="ws-item"><div class="ws-num">5</div>Choose a colour palette</div>
+        <div class="ws-item"><div class="ws-num">6</div>Layout, shape, texture, and motion</div>
+        <div class="ws-item"><div class="ws-num">7</div>Choose your animation style for photos and buttons</div>
+        <div class="ws-item"><div class="ws-num">8</div>Tell me your hard no's</div>
+        <div class="ws-item"><div class="ws-num">9</div>Review everything and get your design profile</div>
+      </div>
+      <div class="nav-row">
+        <button class="btn-next" onclick="goNext()">Let's Begin →</button>
+      </div>
+    </div>`;
+}
+
+// ─── BUSINESS TYPE ──────────────────────────────────────────────────
+function renderBusinessType() {
+  const sel = state.selections.businessType;
+  return `
+    <div class="step-eyebrow">Step 1 of ${TOTAL_PREF_STEPS}</div>
+    <h2 class="step-title">Let's start at the beginning.</h2>
+    <p class="step-desc">What's your brand called, and what kind of business is it?</p>
+    <div class="brand-name-field">
+      <label class="brand-name-label" for="brand-name-input">Brand or site name</label>
+      <input class="brand-name-input" id="brand-name-input" type="text" placeholder="e.g. Studio Marlowe, The Elm Co., Paige Woods" value="${state.selections.brandName || ''}" oninput="updateBrandName(this.value)" />
+    </div>
+    <div class="option-grid">
+      ${BUSINESS_TYPES.map(b => `
+        <div class="option-card ${sel===b.id?'selected':''}" onclick="selectOption('businessType','${b.id}',this)">
+          <div class="option-name">${b.name}</div>
+          <div class="option-desc">${b.desc}</div>
+          <div class="ocheck"></div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()">← Back</button>
+      <button class="btn-next" onclick="goNext()">Next Step →</button>
+    </div>`;
+}
+
+function updateBrandName(val) {
+  state.selections.brandName = val.trim();
+  saveState();
+  renderCanvas();
+}
+
+// ─── UPLOAD ─────────────────────────────────────────────────────────
+function renderUpload() {
+  const hasPhoto = !!state.selections.brandPhoto;
+  return `
+    <div class="step-eyebrow">Step 2 of ${TOTAL_PREF_STEPS}</div>
+    <h2 class="step-title">Let's Start With What You Have</h2>
+    <p class="step-desc">Upload a photo of your current brand, product, or something that captures where you are right now. It doesn't have to be perfect. It gives your preferences real context as we build your profile.</p>
+    <div class="upload-zone" id="upload-zone">
+      ${hasPhoto ? `<img src="${state.selections.brandPhoto}" id="upload-preview" />` : `
+        <div id="upload-placeholder">
+          <div class="upload-icon">+</div>
+          <div class="upload-title">Drag and drop your image here</div>
+          <div class="upload-hint">JPG, PNG, or WEBP · Or click to browse</div>
+        </div>
+        <img id="upload-preview" style="display:none" />`}
+    </div>
+    <input type="file" id="file-input" accept="image/*" style="display:none" />
+    ${hasPhoto ? `<span class="upload-remove" id="upload-remove" style="display:block" onclick="removePhoto()">Remove photo</span>` : ''}
+    <p class="upload-skip" onclick="goNext()">Skip for now →</p>
+    <div class="nav-row" style="margin-top:28px">
+      <button class="btn-back" onclick="goBack()">← Back</button>
+      <button class="btn-next" onclick="goNext()">Next Step →</button>
+    </div>`;
+}
+
+function setupUpload() {
+  const zone = document.getElementById('upload-zone');
+  const input = document.getElementById('file-input');
+  if (!zone || !input) return;
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) handleFileUpload(file);
+  });
+  zone.addEventListener('click', () => input.click());
+  input.addEventListener('change', e => { if (e.target.files[0]) handleFileUpload(e.target.files[0]); });
+}
+
+function handleFileUpload(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    state.selections.brandPhoto = e.target.result;
+    saveState();
+    const prev = document.getElementById('upload-preview');
+    const ph = document.getElementById('upload-placeholder');
+    if (prev) { prev.src = e.target.result; prev.style.display = 'block'; }
+    if (ph) ph.style.display = 'none';
+    let rem = document.getElementById('upload-remove');
+    if (!rem) {
+      rem = document.createElement('span');
+      rem.id = 'upload-remove'; rem.className = 'upload-remove';
+      rem.style.display = 'block'; rem.textContent = 'Remove photo';
+      rem.onclick = removePhoto;
+      document.getElementById('upload-zone').after(rem);
+    } else { rem.style.display = 'block'; }
+    renderCanvas();
+  };
+  reader.readAsDataURL(file);
+}
+
+function removePhoto() {
+  state.selections.brandPhoto = null;
+  saveState();
+  renderStep();
+  renderCanvas();
+}
+
+// ─── TONE ────────────────────────────────────────────────────────────
+function renderTone() {
+  const sel = state.selections.tone;
+  const biz = BUSINESS_TYPES.find(b => b.id === state.selections.businessType);
+  const recTones = biz ? biz.recommendedTone : [];
+  return `
+    <div class="step-eyebrow">Step 3 of ${TOTAL_PREF_STEPS}</div>
+    <h2 class="step-title">What should your brand feel like?</h2>
+    <p class="step-desc">Select all the words that resonate. There are no wrong answers. This is about instinct.</p>
+    ${recTones.length ? `<p class="rec-intro">Brighter borders are suggested for ${biz.name} brands.</p>` : ''}
+    <div class="chip-grid">
+      ${TONE_OPTIONS.map(t => `
+        <div class="chip ${sel.includes(t)?'selected':''} ${recTones.includes(t)?'rec':''}" onclick="toggleTone('${t}')">${t}</div>
+      `).join('')}
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()">← Back</button>
+      <button class="btn-next" onclick="goNext()">Next Step →</button>
+    </div>`;
+}
+
+function toggleTone(word) {
+  const arr = state.selections.tone;
+  const i = arr.indexOf(word);
+  if (i > -1) arr.splice(i, 1); else arr.push(word);
+  document.querySelectorAll('.chip').forEach(el => {
+    el.classList.toggle('selected', arr.includes(el.textContent));
+  });
+  saveState();
+  renderCanvas();
+}
+
+// ─── TYPOGRAPHY ──────────────────────────────────────────────────────
+function renderTypography() {
+  const sel = state.selections.typography;
+  const biz = BUSINESS_TYPES.find(b => b.id === state.selections.businessType);
+  const recTypo = biz ? biz.recommendedTypo : [];
+  return `
+    <div class="step-eyebrow">Step 4 of ${TOTAL_PREF_STEPS}</div>
+    <h2 class="step-title">How should your words look?</h2>
+    <p class="step-desc">Typography sets the personality before a single word is read. Choose the combination that feels most like you.</p>
+    <div class="typo-grid">
+      ${TYPOGRAPHY_OPTIONS.map(t => `
+        <div class="typo-card ${sel===t.id?'selected':''}" onclick="selectOption('typography','${t.id}',this)">
+          ${recTypo.includes(t.id) ? '<div class="rec-badge">Recommended</div>' : ''}
+          <div class="typo-label">${t.name}</div>
+          <div class="typo-head" style="font-family:${t.headFont};font-weight:${t.headWeight};font-size:${t.headSize}">${t.sampleHead}</div>
+          <div class="typo-body" style="font-family:${t.bodyFont};font-weight:${t.bodyWeight}">${t.sampleBody}</div>
+          <div class="typo-desc">${t.descriptor}</div>
+          <div class="ocheck"></div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()">← Back</button>
+      <button class="btn-next" onclick="goNext()">Next Step →</button>
+    </div>`;
+}
+
+// ─── PALETTE ─────────────────────────────────────────────────────────
+function renderPalette() {
+  const sel = state.selections.palette;
+  const biz = BUSINESS_TYPES.find(b => b.id === state.selections.businessType);
+  const recPal = biz ? biz.recommendedPalette : [];
+  return `
+    <div class="step-eyebrow">Step 5 of ${TOTAL_PREF_STEPS}</div>
+    <h2 class="step-title">Which colours feel right?</h2>
+    <p class="step-desc">Choose the palette that matches the emotional world you want your brand to live in.</p>
+    <div class="palette-grid">
+      ${PALETTE_OPTIONS.map(p => `
+        <div class="palette-card ${sel===p.id?'selected':''}" onclick="selectOption('palette','${p.id}',this)">
+          ${recPal.includes(p.id) ? '<div class="rec-badge" style="position:static;display:inline-block;margin-bottom:6px">Recommended</div>' : ''}
+          <div class="palette-swatches">
+            ${p.colors.map(c=>`<div class="palette-swatch" style="background:${c}"></div>`).join('')}
+          </div>
+          <div class="palette-name">${p.name}</div>
+          <div class="palette-mood">${p.descriptor}</div>
+          <div class="ocheck" style="position:absolute;top:12px;right:12px"></div>
+        </div>
+      `).join('')}
+    </div>
+      <div class="palette-card ${sel==='custom'?'selected':''}" style="grid-column:span 2" onclick="selectOption('palette','custom',this)">
+        <div class="palette-name">Build Your Own</div>
+        <div class="palette-mood">Define your own background, text, and accent colour</div>
+        <div class="custom-color-rows" onclick="event.stopPropagation()">
+          <div class="custom-color-row">
+            <span>Background</span>
+            <input type="color" class="color-swatch-picker" value="${state.selections.customColors.bg}" oninput="updateCustomColor('bg',this.value);this.nextElementSibling.value=this.value" />
+            <input type="text" class="hex-input" value="${state.selections.customColors.bg}" maxlength="7" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value)){updateCustomColor('bg',this.value);this.previousElementSibling.value=this.value}" />
+          </div>
+          <div class="custom-color-row">
+            <span>Text</span>
+            <input type="color" class="color-swatch-picker" value="${state.selections.customColors.text}" oninput="updateCustomColor('text',this.value);this.nextElementSibling.value=this.value" />
+            <input type="text" class="hex-input" value="${state.selections.customColors.text}" maxlength="7" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value)){updateCustomColor('text',this.value);this.previousElementSibling.value=this.value}" />
+          </div>
+          <div class="custom-color-row">
+            <span>Accent</span>
+            <input type="color" class="color-swatch-picker" value="${state.selections.customColors.accent}" oninput="updateCustomColor('accent',this.value);this.nextElementSibling.value=this.value" />
+            <input type="text" class="hex-input" value="${state.selections.customColors.accent}" maxlength="7" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value)){updateCustomColor('accent',this.value);this.previousElementSibling.value=this.value}" />
+          </div>
+        </div>
+        <div class="custom-preview-strip">
+          <div id="cprev-bg" style="background:${state.selections.customColors.bg}"></div>
+          <div id="cprev-text" style="background:${state.selections.customColors.text}"></div>
+          <div id="cprev-accent" style="background:${state.selections.customColors.accent}"></div>
+        </div>
+        <div class="ocheck" style="position:absolute;top:12px;right:12px"></div>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()">← Back</button>
+      <button class="btn-next" onclick="goNext()">Next Step →</button>
+    </div>`;
+}
+
+function updateCustomColor(field, value) {
+  state.selections.customColors[field] = value;
+  const el = document.getElementById('cprev-' + field);
+  if (el) el.style.background = value;
+  saveState();
+  if (state.selections.palette === 'custom') renderCanvas();
+}
+
+// ─── GENERIC OPTIONS STEP ────────────────────────────────────────────
+function renderOptions(eyebrow, title, desc, options, key, fourCol) {
+  const step = STEP_KEYS.indexOf(key);
+  const stepLabel = step > 0 ? `Step ${step} of ${TOTAL_PREF_STEPS}` : eyebrow;
+  const sel = state.selections[key];
+  return `
+    <div class="step-eyebrow">${stepLabel}</div>
+    <h2 class="step-title">${title}</h2>
+    <p class="step-desc">${desc}</p>
+    <div class="option-grid">
+      ${options.map(o => `
+        <div class="option-card ${sel===o.id?'selected':''}" onclick="selectOption('${key}','${o.id}',this)">
+          <div class="option-name">${o.name}</div>
+          <div class="option-desc">${o.desc}</div>
+          <div class="ocheck"></div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()">← Back</button>
+      <button class="btn-next" onclick="goNext()">Next Step →</button>
+    </div>`;
+}
+
+// ─── HARD NO'S ───────────────────────────────────────────────────────
+function renderHardNos() {
+  const sel = state.selections.hardNos;
+  return `
+    <div class="step-eyebrow">Step ${STEP_KEYS.indexOf('hardNos')} of ${TOTAL_PREF_STEPS}</div>
+    <h2 class="step-title">What's a hard no?</h2>
+    <p class="step-desc">Select anything you definitively do not want. This is just as important as everything you do want.</p>
+    <div class="chip-grid">
+      ${HARD_NO_OPTIONS.map((n,i) => `
+        <div class="chip ${sel.includes(n)?'selected':''}" onclick="toggleHardNo(${i})">${n}</div>
+      `).join('')}
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()">← Back</button>
+      <button class="btn-next" onclick="goNext()">Review My Choices →</button>
+    </div>`;
+}
+
+function toggleHardNo(i) {
+  const item = HARD_NO_OPTIONS[i];
+  const arr = state.selections.hardNos;
+  const idx = arr.indexOf(item);
+  if (idx > -1) arr.splice(idx, 1); else arr.push(item);
+  document.querySelectorAll('#step-panel .chip').forEach((el, j) => {
+    el.classList.toggle('selected', arr.includes(HARD_NO_OPTIONS[j]));
+  });
+  saveState();
+  renderCanvas();
+}
+
+// ─── GENERIC SELECT ──────────────────────────────────────────────────
+function selectOption(key, value, el) {
+  state.selections[key] = value;
+  const parent = el.closest('.typo-grid, .palette-grid, .option-grid');
+  if (parent) parent.querySelectorAll('.typo-card,.palette-card,.option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  saveState();
+  renderCanvas();
+}
+
+// ─── REVIEW ──────────────────────────────────────────────────────────
+function renderReview() {
+  const s = state.selections;
+  const typo = TYPOGRAPHY_OPTIONS.find(t => t.id === s.typography);
+  const pal = PALETTE_OPTIONS.find(p => p.id === s.palette);
+  const layout = LAYOUT_OPTIONS.find(l => l.id === s.layout);
+  const shape = SHAPE_OPTIONS.find(sh => sh.id === s.shape);
+  const border = BORDER_OPTIONS.find(b => b.id === s.border);
+  const motion = MOTION_OPTIONS.find(m => m.id === s.motion);
+  const texture = TEXTURE_OPTIONS.find(t => t.id === s.texture);
+
+  const biz = BUSINESS_TYPES.find(b => b.id === s.businessType);
+  const items = [
+    {cat:'Brand name', val: s.brandName || 'Not entered', step:1},
+    {cat:'Business type', val: biz ? biz.name : 'Not chosen', step:1},
+    {cat:'Brand photo', val: s.brandPhoto ? 'Uploaded' : 'Skipped', step:2},
+    {cat:'Emotional tone', val: s.tone.length ? s.tone.join(', ') : 'Not chosen', step:3},
+    {cat:'Typography', val: typo ? `${typo.name}: ${typo.descriptor}` : 'Not chosen', step:4},
+    {cat:'Colour palette', val: pal ? `${pal.name}: ${pal.descriptor}` : (s.palette==='custom'?'Custom colours':'Not chosen'), step:5},
+    {cat:'Layout & spacing', val: layout ? layout.name : 'Not chosen', step:6},
+    {cat:'Shape & edge', val: shape ? shape.name : 'Not chosen', step:7},
+    {cat:'Borders & lines', val: border ? border.name : 'Not chosen', step:8},
+    {cat:'Motion', val: motion ? motion.name : 'Not chosen', step:9},
+    {cat:'Texture', val: texture ? texture.name : 'Not chosen', step:10},
+    {cat:'Animation style', val: ANIM_OPTIONS.find(a=>a.id===s.animStyle)?.name || 'Not chosen', step:11},
+    {cat:'Hard no\'s', val: s.hardNos.length ? s.hardNos.join(', ') : 'None specified', step:12},
+  ];
+
+  return `
+    <div class="step-eyebrow">Review</div>
+    <h2 class="step-title">Does this look right?</h2>
+    <p class="step-desc">Here are all your choices. Click Edit next to any category to go back and change it.</p>
+    <div class="review-grid">
+      ${items.map(item => `
+        <div class="review-card">
+          <div class="review-left">
+            <div class="review-cat">${item.cat}</div>
+            <div class="review-val">${item.val}</div>
+          </div>
+          <span class="review-edit" onclick="jumpTo(${item.step})">Edit</span>
+        </div>
+      `).join('')}
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()">← Back</button>
+      <button class="btn-next" onclick="goNext()">Generate My Profile →</button>
+    </div>`;
+}
+
+// ─── HERO LAYOUT SELECTOR ────────────────────────────────────────────
+function getHeroLayout(s) {
+  const tone = s.tone.map(t => t.toLowerCase());
+  const has = (...words) => words.some(w => tone.includes(w));
+
+  if (s.shape === 'sharp' && (s.border === 'editorial' || s.border === 'bold'))
+    return 'framed';
+  if (has('bold','moody','editorial','raw') || s.border === 'bold')
+    return 'fullbleed';
+  if (has('warm','approachable','rustic','playful','whimsical') || s.shape === 'soft')
+    return 'polaroid';
+  if (has('modern','crisp') || s.motion === 'expressive')
+    return 'floating';
+  return 'split';
+}
+
+// ─── HERO SECTION BUILDER ────────────────────────────────────────────
+function buildHeroSection(layout, s, st) {
+  const { bg, textCol, accent, accentText, headFont, headWt, bodyFont, bodyWt,
+          headSize, heroPad, navPad, navBorder, btnBorder, radius, cardRadius,
+          textureCss, copy } = st;
+
+  const palData   = PALETTE_OPTIONS.find(p => p.id === s.palette);
+  const photoSrc  = s.brandPhoto || palData?.photo || null;
+  const imgEl     = photoSrc
+    ? `<img src="${photoSrc}" alt="Brand photo" style="width:100%;height:100%;object-fit:cover;display:block" />`
+    : null;
+
+  const topWord = s.tone[0] || 'Brand';
+
+  if (layout === 'fullbleed') {
+    const gradFallback = `background:linear-gradient(135deg, ${accent} 0%, ${bg} 100%)`;
+    return `
+      <div class="hero-fullbleed" style="background:${bg};${textureCss}">
+        ${imgEl ? imgEl : `<div class="fb-gradient" style="${gradFallback}"></div>`}
+        <div class="fb-scrim"></div>
+        <div class="hero-text">
+          <div class="hero-eyebrow" style="font-family:${bodyFont}">${copy.eyebrow}</div>
+          <h1 class="hero-headline" style="font-family:${headFont};font-weight:${headWt};font-size:${headSize}">${copy.headline}</h1>
+          <p class="hero-body-copy" style="font-family:${bodyFont};font-weight:${bodyWt}">${copy.body}</p>
+          <div class="hero-cta-row">
+            <div class="hero-btn" style="background:rgba(255,255,255,0.15);border-radius:${radius};border:1.5px solid rgba(255,255,255,0.6);font-family:${bodyFont}">${copy.cta}</div>
+            <div class="hero-btn-ghost" style="font-family:${bodyFont}">Learn more →</div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  if (layout === 'polaroid') {
+    return `
+      <div class="hero-polaroid" style="background:${bg};${textureCss}">
+        <div class="hero-text" style="padding:${heroPad}">
+          <div class="hero-eyebrow" style="color:${textCol};font-family:${bodyFont}">${copy.eyebrow}</div>
+          <h1 class="hero-headline" style="font-family:${headFont};font-weight:${headWt};font-size:${headSize};color:${textCol}">${copy.headline}</h1>
+          <p class="hero-body-copy" style="font-family:${bodyFont};font-weight:${bodyWt};color:${textCol}">${copy.body}</p>
+          <div class="hero-cta-row">
+            <div class="hero-btn" style="background:${accent};color:${accentText};border-radius:${radius};border:${btnBorder};font-family:${bodyFont}">${copy.cta}</div>
+            <div class="hero-btn-ghost" style="color:${textCol};font-family:${bodyFont}">Learn more →</div>
+          </div>
+        </div>
+        <div class="polaroid-wrap">
+          <div class="polaroid-card">
+            ${imgEl ? imgEl : `<div class="polar-ph">${topWord}</div>`}
+            <div class="polaroid-caption" style="color:${accent}">${topWord}</div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  if (layout === 'split') {
+    const divBorder = s.border === 'minimal' ? 'none'
+      : s.border === 'structured' ? `1px solid ${textCol}30`
+      : s.border === 'editorial'  ? `2px solid ${textCol}70`
+      : s.border === 'bold'       ? `3px solid ${textCol}`
+      : 'none';
+    const textPad = `40px 52px`;
+    return `
+      <div class="hero-split" style="background:${bg};${textureCss}">
+        <div class="hero-text" style="padding:${textPad}">
+          <div class="hero-eyebrow" style="color:${textCol};font-family:${bodyFont}">${copy.eyebrow}</div>
+          <h1 class="hero-headline" style="font-family:${headFont};font-weight:${headWt};font-size:${headSize};color:${textCol}">${copy.headline}</h1>
+          <p class="hero-body-copy" style="font-family:${bodyFont};font-weight:${bodyWt};color:${textCol}">${copy.body}</p>
+          <div class="hero-cta-row">
+            <div class="hero-btn" style="background:${accent};color:${accentText};border-radius:${radius};border:${btnBorder};font-family:${bodyFont}">${copy.cta}</div>
+            <div class="hero-btn-ghost" style="color:${textCol};font-family:${bodyFont}">Learn more →</div>
+          </div>
+        </div>
+        <div class="split-divider" style="background:${divBorder !== 'none' ? textCol : 'transparent'};opacity:0.2"></div>
+        <div class="split-img-half">
+          ${imgEl ? imgEl : `<div class="split-ph" style="background:${accent}22;color:${textCol}">Your Image</div>`}
+        </div>
+      </div>`;
+  }
+
+  if (layout === 'floating') {
+    const floatRadius = s.shape === 'sharp' ? '0' : s.shape === 'soft' ? '20px' : '10px';
+    return `
+      <div class="hero-floating" style="background:${bg};${textureCss}">
+        <div class="hero-text">
+          <div class="hero-eyebrow" style="color:${textCol};font-family:${bodyFont}">${copy.eyebrow}</div>
+          <h1 class="hero-headline" style="font-family:${headFont};font-weight:${headWt};font-size:${headSize};color:${textCol}">${copy.headline}</h1>
+          <p class="hero-body-copy" style="font-family:${bodyFont};font-weight:${bodyWt};color:${textCol};max-width:380px">${copy.body}</p>
+          <div class="hero-cta-row">
+            <div class="hero-btn" style="background:${accent};color:${accentText};border-radius:${radius};border:${btnBorder};font-family:${bodyFont}">${copy.cta}</div>
+            <div class="hero-btn-ghost" style="color:${textCol};font-family:${bodyFont}">Learn more →</div>
+          </div>
+        </div>
+        <div class="floating-img" style="border-radius:${floatRadius}">
+          ${imgEl ? imgEl : `<div class="float-ph" style="background:${accent}33;color:${textCol}">${topWord}</div>`}
+        </div>
+      </div>`;
+  }
+
+  if (layout === 'framed') {
+    const frameWeight = s.border === 'structured' ? '1.5px' : s.border === 'editorial' ? '2px' : '3.5px';
+    return `
+      <div class="hero-framed" style="background:${bg};${textureCss}">
+        <div class="hero-text">
+          <div class="hero-eyebrow" style="color:${textCol};font-family:${bodyFont}">${copy.eyebrow}</div>
+          <h1 class="hero-headline" style="font-family:${headFont};font-weight:${headWt};font-size:${headSize};color:${textCol}">${copy.headline}</h1>
+          <p class="hero-body-copy" style="font-family:${bodyFont};font-weight:${bodyWt};color:${textCol}">${copy.body}</p>
+          <div class="hero-cta-row">
+            <div class="hero-btn" style="background:${accent};color:${accentText};border-radius:0;border:${frameWeight} solid ${accent};font-family:${bodyFont}">${copy.cta}</div>
+            <div class="hero-btn-ghost" style="color:${textCol};font-family:${bodyFont}">Learn more →</div>
+          </div>
+        </div>
+        <div class="framed-wrap">
+          <div class="framed-box" style="border:${frameWeight} solid ${textCol}">
+            ${imgEl ? imgEl : `<div class="frame-ph" style="background:${accent}18;color:${textCol}">${topWord}</div>`}
+          </div>
+        </div>
+      </div>`;
+  }
+
+  return '';
+}
+
+// ─── HERO COPY GENERATOR ─────────────────────────────────────────────
+function generateHeroCopy(tone) {
+  const t = tone.map(w => w.toLowerCase());
+  const has = w => t.includes(w);
+  let headline = 'Your Brand, Defined.';
+  let body = 'A brand built with purpose, designed to say exactly what it needs to, and nothing more.';
+  let cta = 'See the Work';
+  let eyebrow = 'Est. 2024';
+
+  if (has('luxurious') || has('sophisticated')) {
+    headline = 'Reserved for the Discerning.';
+    body = 'Crafted for those who notice the difference. Every surface considered. Every detail earned.';
+    cta = 'Discover More'; eyebrow = 'A Higher Standard';
+  } else if (has('bold')) {
+    headline = 'No Compromise.';
+    body = 'No half measures. No hedging. Just the work, and the thinking behind it.';
+    cta = 'See It All'; eyebrow = 'The Work';
+  } else if (has('editorial')) {
+    headline = 'The Work Speaks First.';
+    body = 'A clear perspective. A considered point of view. Everything here is intentional, down to the last detail.';
+    cta = 'Read More'; eyebrow = 'A Point of View';
+  } else if (has('minimal') || has('calm')) {
+    headline = 'Less. But Better.';
+    body = 'The unnecessary has been removed. What remains is precisely what you need.';
+    cta = 'Explore'; eyebrow = 'Simply';
+  } else if (has('refined')) {
+    headline = 'Crafted With Intention.';
+    body = 'Every decision has a reason. Every element, its place. This is what considered work looks like.';
+    cta = 'View the Work'; eyebrow = 'The Studio';
+  } else if (has('warm') || has('approachable')) {
+    headline = 'Made for the Long Run.';
+    body = 'Built around the things that matter. Real work, real people, real results.';
+    cta = 'Get in Touch'; eyebrow = 'Welcome';
+  } else if (has('timeless')) {
+    headline = 'Made to Last.';
+    body = 'Beyond the trend. Beyond the moment. Built for now and for what comes next.';
+    cta = 'Learn More'; eyebrow = 'Enduring';
+  } else if (has('modern')) {
+    headline = 'What\'s Next.';
+    body = 'Forward-facing without apology. Built for right now, ready for what follows.';
+    cta = 'Explore Now'; eyebrow = 'Current';
+  } else if (has('moody') || has('romantic')) {
+    headline = 'Something Worth Feeling.';
+    body = 'The kind of brand that stays with you. Atmosphere, considered. Mood, intentional.';
+    cta = 'Explore'; eyebrow = 'The Experience';
+  }
+  return { headline, body, cta, eyebrow };
+}
+
+// ─── SUMMARY ─────────────────────────────────────────────────────────
+function renderSummary() {
+  const s = state.selections;
+  const typo = TYPOGRAPHY_OPTIONS.find(t => t.id === s.typography);
+  const pal  = PALETTE_OPTIONS.find(p => p.id === s.palette);
+  const layout  = LAYOUT_OPTIONS.find(l => l.id === s.layout);
+  const shape   = SHAPE_OPTIONS.find(sh => sh.id === s.shape);
+  const border  = BORDER_OPTIONS.find(b => b.id === s.border);
+  const motion  = MOTION_OPTIONS.find(m => m.id === s.motion);
+  const texture = TEXTURE_OPTIONS.find(t => t.id === s.texture);
+  const voice   = generateVoice(s, typo, pal, layout, shape);
+
+  const copy     = generateHeroCopy(s.tone);
+  const heroLayout = getHeroLayout(s);
+
+  // Shared style object
+  const bg         = s.palette === 'custom' ? s.customColors.bg   : (pal ? pal.canvasBg    : '#FAFAF8');
+  const textCol    = s.palette === 'custom' ? s.customColors.text : (pal ? pal.canvasText  : '#1A1A1A');
+  const accent     = s.palette === 'custom' ? s.customColors.accent : (pal ? pal.canvasAccent : '#1A1A1A');
+  const accentText = isLight(accent) ? '#1A1A1A' : '#FFFFFF';
+  const radius     = shape?.id === 'sharp' ? '0' : shape?.id === 'soft' ? '40px' : '6px';
+  const cardRadius = shape?.id === 'sharp' ? '0' : shape?.id === 'soft' ? '20px' : '10px';
+  const heroPad    = layout?.id === 'spacious' ? '0 72px 52px' : layout?.id === 'dense' ? '0 40px 28px' : '0 56px 40px';
+  const headSize   = layout?.id === 'spacious' ? '62px' : layout?.id === 'dense' ? '42px' : '52px';
+  const navPad     = layout?.id === 'spacious' ? '24px 72px' : layout?.id === 'dense' ? '14px 40px' : '20px 56px';
+  const navBorder  = border?.id === 'minimal' ? 'none' : border?.id === 'structured' ? `1px solid ${textCol}22` : border?.id === 'editorial' ? `1.5px solid ${textCol}55` : border?.id === 'bold' ? `2.5px solid ${textCol}` : 'none';
+  const btnBorder  = border?.id === 'bold' ? `2px solid ${accent}` : 'none';
+  const headFont   = typo ? typo.headFont  : "'Cormorant Garamond', serif";
+  const headWt     = typo ? typo.headWeight : '400';
+  const bodyFont   = typo ? typo.bodyFont  : "'DM Sans', sans-serif";
+  const bodyWt     = typo ? typo.bodyWeight : '300';
+  const textureCss = texture?.id === 'subtle'  ? `background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E")`
+                   : texture?.id === 'layered' ? `background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E")` : '';
+
+  const st = { bg, textCol, accent, accentText, radius, cardRadius, heroPad, headSize,
+               navPad, navBorder, btnBorder, headFont, headWt, bodyFont, bodyWt, textureCss, copy };
+
+  const heroSection = buildHeroSection(heroLayout, s, st);
+
+  // Layout label for export bar
+  const layoutLabels = { fullbleed:'Full Bleed: Editorial & Immersive', polaroid:'Polaroid: Warm & Personal',
+    split:'Clean Split: Refined & Direct', floating:'Floating Overlap: Layered & Dynamic', framed:'Architectural Frame: Structured & Considered' };
+
+  return `
+    <div class="summary-screen">
+      <div class="sd anim-${s.animStyle || 'none'}" style="background:${bg};display:flex;flex-direction:column">
+        <nav class="hero-nav" style="padding:${navPad};border-bottom:${navBorder};color:${heroLayout==='fullbleed'?'#FFFFFF':textCol};background:${heroLayout==='fullbleed'?'transparent':bg};position:${heroLayout==='fullbleed'?'absolute':'relative'};top:0;left:0;right:0;z-index:10;flex-shrink:0">
+          <div class="hero-nav-logo" style="font-family:${headFont};font-weight:${headWt}">${s.brandName || pal?.name || 'Your Brand'}</div>
+          <div class="hero-nav-links" style="font-family:${bodyFont}">
+            <span>Work</span><span>About</span><span>Services</span><span>Contact</span>
+          </div>
+        </nav>
+        ${heroSection}
+      </div>
+      <div class="se">
+        <div class="se-left">
+          <div class="se-label">Layout Style: ${layoutLabels[heroLayout]}</div>
+          <div class="se-voice">${voice}</div>
+        </div>
+        <div class="se-actions">
+          <button class="se-btn primary" onclick="printSummary()">Save as PDF</button>
+          <button class="se-btn secondary" onclick="copyPrompt()">Copy as Brief</button>
+          <button class="se-btn ghost" onclick="jumpTo(11)">← Edit</button>
+          <button class="se-btn ghost" onclick="startOver()">Start Over</button>
+        </div>
+        <span class="copy-confirm" id="copy-confirm">Copied.</span>
+      </div>
+    </div>`;
+}
+
+function generateVoice(s, typo, pal, layout, shape, colorTag = null) {
+  const fmtColor = colorTag
+    ? (hex, role, name) => colorTag(hex, role, name)
+    : (hex, role, name) => name ? `${role} ${name} (${hex})` : role ? `${role} (${hex})` : hex;
+  const getName = (hex) => {
+    if (s.palette === 'custom' || !pal) return '';
+    if (hex === pal.canvasBg)     return pal.bgName     || '';
+    if (hex === pal.canvasText)   return pal.textName   || '';
+    if (hex === pal.canvasAccent) return pal.accentName || '';
+    return '';
+  };
+  const biz = BUSINESS_TYPES.find(b => b.id === s.businessType);
+  const toneMap = {
+    'warm':          'comfortable and easy to trust',
+    'approachable':  'welcoming without being casual',
+    'refined':       'polished without trying too hard',
+    'sophisticated': 'quietly confident',
+    'bold':          'direct and hard to ignore',
+    'moody':         'atmospheric and memorable',
+    'editorial':     'considered and intentional',
+    'minimal':       'clean and uncluttered',
+    'modern':        'current and no-nonsense',
+    'playful':       'energetic and personable',
+    'rustic':        'grounded and honest',
+    'whimsical':     'expressive and full of character',
+    'raw':           'unfiltered and genuine',
+    'timeless':      'enduring, not trend-driven',
+    'calm':          'steady and reassuring',
+    'crisp':         'sharp and decisive',
+    'romantic':      'emotive and considered',
+  };
+
+  const tones = s.tone.map(t => t.toLowerCase());
+  const outcomes = tones.slice(0, 2).map(t => toneMap[t]).filter(Boolean);
+  const bg_v     = s.palette === 'custom' ? s.customColors.bg     : pal?.canvasBg;
+  const textC_v  = s.palette === 'custom' ? s.customColors.text   : pal?.canvasText;
+  const accent_v = s.palette === 'custom' ? s.customColors.accent : pal?.canvasAccent;
+
+  let sentences = [];
+
+  if (outcomes.length >= 2) {
+    sentences.push(`Your brand should feel ${outcomes[0]} and ${outcomes[1]}, and visitors should sense that within the first few seconds of landing.`);
+  } else if (outcomes.length === 1) {
+    sentences.push(`Your brand should feel ${outcomes[0]}, and visitors should sense that within the first few seconds of landing.`);
+  } else if (s.tone.length) {
+    sentences.push(`Your brand carries a ${s.tone.slice(0,2).join(', ').toLowerCase()} quality that should come through immediately on the page.`);
+  }
+
+  if (typo) {
+    sentences.push(`The fonts are legible at any size. Headings make it immediately clear where attention belongs, and body copy should never make someone work to read it.`);
+  }
+
+  if (layout?.id === 'spacious') {
+    sentences.push(`Give each section room to breathe. One strong image per section is more effective than several competing ones. Do not overcrowd with text.`);
+  } else if (layout?.id === 'dense') {
+    sentences.push(`This layout handles content well. Keep groupings tight and intentional so density reads as editorial, not cluttered.`);
+  } else if (layout?.id === 'balanced') {
+    sentences.push(`Follow the grid. Consistent spacing and alignment is what makes this feel considered rather than assembled.`);
+  }
+
+  if (biz?.id === 'service' || biz?.id === 'personal') {
+    sentences.push(`This site is stylistically suited for a professional, not a product. Resist anything that makes it feel like a shop or a pitch.`);
+  } else if (biz?.id === 'product') {
+    sentences.push(`This design supports discovery and decision-making. Every element should help someone decide, not just admire.`);
+  } else if (biz?.id === 'creative') {
+    sentences.push(`This is a portfolio and a first impression at once. The work should be prominent and the noise minimal.`);
+  } else if (biz?.id === 'hospitality') {
+    sentences.push(`Atmosphere is the first thing people buy. The design should make someone feel like they are already there.`);
+  } else if (biz?.id === 'wellness') {
+    sentences.push(`Trust is the first conversion. Nothing should feel pushy or sales-forward.`);
+  }
+
+  if (accent_v && bg_v && textC_v) {
+    sentences.push(`Use ${fmtColor(accent_v, 'your accent color', getName(accent_v))} only for calls to action, links, and important callouts. Everything else stays in ${fmtColor(bg_v, 'your background', getName(bg_v))} and your text color, ${fmtColor(textC_v, '', getName(textC_v))}.`);
+  }
+
+  if (!sentences.length) return 'Complete all steps to generate your design voice.';
+  return sentences.join(' ');
+}
+
+// ─── DEV: PDF PREVIEW SHORTCUT ───────────────────────────────────────
+function devPDF() {
+  state.selections = {
+    businessType: 'creative',
+    brandName: 'Studio Fern',
+    brandPhoto: null,
+    tone: ['Warm', 'Refined', 'Approachable'],
+    typography: 'softeditorial',
+    palette: 'warm-neutrals',
+    layout: 'spacious',
+    shape: 'soft',
+    border: 'structured',
+    motion: 'expressive',
+    texture: 'subtle',
+    animStyle: 'reveal',
+    hardNos: ['Neon colours', 'Overly corporate stock photography', 'Cluttered layouts'],
+    customColors: { bg: '#F9F6F2', text: '#3A2E24', accent: '#8A7560' },
+  };
+  printSummary();
+}
+
+// ─── EXPORT ──────────────────────────────────────────────────────────
+function printSummary() {
+  const s = state.selections;
+  const typo    = TYPOGRAPHY_OPTIONS.find(t => t.id === s.typography);
+  const pal     = PALETTE_OPTIONS.find(p => p.id === s.palette);
+  const layout  = LAYOUT_OPTIONS.find(l => l.id === s.layout);
+  const shape   = SHAPE_OPTIONS.find(sh => sh.id === s.shape);
+  const border  = BORDER_OPTIONS.find(b => b.id === s.border);
+  const motion  = MOTION_OPTIONS.find(m => m.id === s.motion);
+  const texture = TEXTURE_OPTIONS.find(t => t.id === s.texture);
+  const anim    = ANIM_OPTIONS.find(a => a.id === s.animStyle);
+  const biz     = BUSINESS_TYPES.find(b => b.id === s.businessType);
+
+  // Inline colour chip for use inside the voice paragraph and notes
+  const swatchTag = (hex, role, name) => {
+    const label = role && name ? `${role} ${name} (${hex})` : role ? `${role} (${hex})` : name ? `${name} (${hex})` : hex;
+    return `<span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;background:rgba(0,0,0,0.04);border-radius:4px;padding:1px 6px 1px 3px;margin:0 1px">` +
+      `<span style="display:inline-block;width:10px;height:10px;background:${hex};border-radius:2px;border:1px solid rgba(0,0,0,0.14);flex-shrink:0"></span>` +
+      `<span style="font-style:normal">${label}</span></span>`;
+  };
+
+  const voice   = generateVoice(s, typo, pal, layout, shape);
+
+  // Hero mockup for "in action" section
+  const copy       = generateHeroCopy(s.tone);
+  const heroLayout = getHeroLayout(s);
+  const bg_h       = s.palette === 'custom' ? s.customColors.bg     : (pal ? pal.canvasBg     : '#FAFAF8');
+  const textCol_h  = s.palette === 'custom' ? s.customColors.text   : (pal ? pal.canvasText   : '#1A1A1A');
+  const accent_h   = s.palette === 'custom' ? s.customColors.accent : (pal ? pal.canvasAccent : '#1A1A1A');
+  const accentText_h = isLight(accent_h) ? '#1A1A1A' : '#FFFFFF';
+  const radius_h   = shape?.id === 'sharp' ? '0' : shape?.id === 'soft' ? '40px' : '6px';
+  const cardRadius_h = shape?.id === 'sharp' ? '0' : shape?.id === 'soft' ? '20px' : '10px';
+  const heroPad_h  = layout?.id === 'spacious' ? '0 72px 52px' : layout?.id === 'dense' ? '0 40px 28px' : '0 56px 40px';
+  const headSize_h = layout?.id === 'spacious' ? '62px' : layout?.id === 'dense' ? '42px' : '52px';
+  const navPad_h   = layout?.id === 'spacious' ? '24px 72px' : layout?.id === 'dense' ? '14px 40px' : '20px 56px';
+  const navBorder_h = border?.id === 'minimal' ? 'none' : border?.id === 'structured' ? `1px solid ${textCol_h}22` : border?.id === 'editorial' ? `1.5px solid ${textCol_h}55` : border?.id === 'bold' ? `2.5px solid ${textCol_h}` : 'none';
+  const btnBorder_h = border?.id === 'bold' ? `2px solid ${accent_h}` : 'none';
+  const headFont_h  = typo ? typo.headFont  : "'Cormorant Garamond', serif";
+  const headWt_h    = typo ? typo.headWeight : '400';
+  const bodyFont_h  = typo ? typo.bodyFont  : "'DM Sans', sans-serif";
+  const bodyWt_h    = typo ? typo.bodyWeight : '300';
+  const textureCss_h = texture?.id === 'subtle'  ? `background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E")`
+                     : texture?.id === 'layered' ? `background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E")` : '';
+  const st_h = { bg: bg_h, textCol: textCol_h, accent: accent_h, accentText: accentText_h,
+                 radius: radius_h, cardRadius: cardRadius_h, heroPad: heroPad_h, headSize: headSize_h,
+                 navPad: navPad_h, navBorder: navBorder_h, btnBorder: btnBorder_h,
+                 headFont: headFont_h, headWt: headWt_h, bodyFont: bodyFont_h, bodyWt: bodyWt_h,
+                 textureCss: textureCss_h, copy };
+  const heroHtml   = buildHeroSection(heroLayout, s, st_h);
+  const layoutLabels = { fullbleed:'Full Bleed: Editorial and Immersive', polaroid:'Polaroid: Warm and Personal',
+    split:'Clean Split: Refined and Direct', floating:'Floating Overlap: Layered and Dynamic',
+    framed:'Architectural Frame: Structured and Considered' };
+
+  const palColors = s.palette === 'custom'
+    ? [s.customColors.bg, s.customColors.text, s.customColors.accent]
+    : (pal?.colors || []);
+  const palName = s.palette === 'custom' ? 'Custom Colours' : pal?.name;
+  const palMood = s.palette === 'custom'
+    ? `Background ${s.customColors.bg} · Text ${s.customColors.text} · Accent ${s.customColors.accent}`
+    : pal?.descriptor;
+
+  const sec = (label, body, note) => `
+    <div style="margin-bottom:26px;padding-bottom:26px;border-bottom:1px solid #EAE6E0">
+      <div style="font-size:9px;font-weight:600;letter-spacing:0.11em;text-transform:uppercase;color:#B8B0A4;margin-bottom:9px">${label}</div>
+      <div style="margin-bottom:${note ? '8px' : '0'}">${body}</div>
+      ${note ? `<div style="font-size:12px;color:#9A9080;line-height:1.6">${note}</div>` : ''}
+    </div>`;
+
+  document.getElementById('print-summary').innerHTML = `
+    <div style="font-family:'DM Sans',sans-serif;max-width:660px;margin:0 auto;padding:52px 44px;color:#1A1A1A">
+
+      <div style="margin-bottom:36px;padding-bottom:28px;border-bottom:2px solid #1A1A1A;display:flex;justify-content:space-between;align-items:flex-end;gap:24px">
+        <div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;line-height:1;margin-bottom:7px">Tell Me Everything</div>
+          ${s.brandName ? `<div style="font-size:15px;font-weight:500;color:#1A1A1A;margin-bottom:3px">${s.brandName}</div>` : ''}
+          <div style="font-size:11px;color:#B8B0A4">${biz ? biz.name + ' · ' : ''}Design Preference Profile by Paige Woods</div>
+        </div>
+        ${palColors.length ? `<div style="display:flex;gap:5px;flex-shrink:0">${palColors.slice(0,5).map(c=>`<div style="width:18px;height:44px;background:${c};border-radius:3px"></div>`).join('')}</div>` : ''}
+      </div>
+
+      <div style="background:${bg_h};border-radius:10px;padding:28px 30px;margin-bottom:36px;-webkit-print-color-adjust:exact;print-color-adjust:exact">
+        <div style="font-size:9px;font-weight:600;letter-spacing:0.11em;text-transform:uppercase;color:${accent_h};margin-bottom:11px">Your design voice</div>
+        <div style="font-family:${headFont_h};font-weight:${headWt_h};font-size:18px;line-height:1.7;color:${textCol_h}">${voice}</div>
+      </div>
+
+      ${s.tone.length ? sec(
+        'What your brand should feel like',
+        s.tone.map(t => `<span style="display:inline-block;border:1px solid #D4CEC6;border-radius:100px;padding:4px 13px;font-size:13px;color:#3A3028;margin:2px 4px 2px 0">${t}</span>`).join(''),
+        'These are the feelings this site needs to deliver. When something feels off in the design, check it against these first.'
+      ) : ''}
+
+      ${typo ? sec(
+        'How your words will look',
+        `<div style="font-family:${typo.headFont};font-size:22px;font-weight:${typo.headWeight};color:#1A1A1A;margin-bottom:5px">${typo.name}</div>
+         <div style="font-family:${typo.bodyFont};font-size:13px;font-weight:${typo.bodyWeight};color:#6A6058;line-height:1.6">${typo.sampleBody}</div>`,
+        `The heading font sets the tone immediately. The body font handles the actual reading. Both need to work at small sizes on screen and in print.`
+      ) : ''}
+
+      ${palName ? `
+        <div style="margin-bottom:26px;padding-bottom:26px;border-bottom:1px solid #EAE6E0">
+          <div style="font-size:9px;font-weight:600;letter-spacing:0.11em;text-transform:uppercase;color:#B8B0A4;margin-bottom:9px">Your colour world</div>
+          <div style="font-size:15px;font-weight:500;color:#1A1A1A;margin-bottom:14px">${palName}</div>
+          ${(() => {
+            const bg_p   = s.palette==='custom' ? s.customColors.bg     : pal?.canvasBg;
+            const text_p = s.palette==='custom' ? s.customColors.text   : pal?.canvasText;
+            const acc_p  = s.palette==='custom' ? s.customColors.accent : pal?.canvasAccent;
+            const named  = [
+              {hex: bg_p,   role: 'Background'},
+              {hex: text_p, role: 'Text'},
+              {hex: acc_p,  role: 'Accent'},
+            ].filter(x => x.hex);
+            const extras = palColors.filter(c => c !== bg_p && c !== text_p && c !== acc_p);
+            const getColorName = (hex) => {
+              if (s.palette === 'custom' || !pal) return '';
+              if (hex === pal.canvasBg)     return pal.bgName     || '';
+              if (hex === pal.canvasText)   return pal.textName   || '';
+              if (hex === pal.canvasAccent) return pal.accentName || '';
+              return '';
+            };
+            const swatchRow = ({hex, role}) => {
+              const cname = getColorName(hex);
+              return `<div style="display:flex;align-items:center;gap:10px">
+                <div style="width:36px;height:36px;background:${hex};border-radius:5px;border:1px solid rgba(0,0,0,0.08);flex-shrink:0;-webkit-print-color-adjust:exact;print-color-adjust:exact"></div>
+                <div>
+                  <div style="font-size:11px;font-weight:500;color:#B8B0A4;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px">${role}</div>
+                  <div style="font-size:13px;font-weight:500;color:#1A1A1A">${cname || hex}</div>
+                  ${cname ? `<div style="font-size:11px;color:#9A9080;letter-spacing:0.04em;font-family:monospace">${hex}</div>` : ''}
+                </div>
+              </div>`;
+            };
+            const extraChip = hex =>
+              `<div style="display:flex;align-items:center;gap:10px">
+                <div style="width:36px;height:36px;background:${hex};border-radius:5px;border:1px solid rgba(0,0,0,0.08);flex-shrink:0;-webkit-print-color-adjust:exact;print-color-adjust:exact"></div>
+                <div style="font-size:11px;color:#9A9080;letter-spacing:0.04em;font-family:monospace">${hex}</div>
+              </div>`;
+            const acc_rule = acc_p
+              ? `<div style="font-size:12px;color:#9A9080;line-height:1.6;margin-top:12px">Use the accent only for calls to action, links, and important callouts. Everything else stays in your background and text colors.</div>`
+              : '';
+            return `<div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:4px">
+              ${named.map(swatchRow).join('')}
+              ${extras.map(extraChip).join('')}
+            </div>${acc_rule}`;
+          })()}
+        </div>` : ''}
+
+      ${layout||shape||border ? sec(
+        'How your pages are laid out',
+        `<span style="font-size:14px;color:#1A1A1A">${[layout?.name, shape?.name, border?.name].filter(Boolean).join(' · ')}</span>`,
+        `${[layout?.desc, shape?.desc, border?.desc].filter(Boolean).join(' ')} These choices determine the visual rhythm of every page. Consistency here is what makes a site feel designed, not assembled.`
+      ) : ''}
+
+      ${motion||texture||anim ? sec(
+        'How things move and feel',
+        `<span style="font-size:14px;color:#1A1A1A">${[motion?.name, texture?.name, anim?.name].filter(Boolean).join(' · ')}</span>`,
+        `${[motion?.desc, anim?.desc].filter(Boolean).join(' ')}${texture ? ' Surfaces are ' + texture.name.toLowerCase() + '.' : ''} Subtle motion builds trust. Anything that moves should have a reason to.`
+      ) : ''}
+
+      ${s.hardNos.length ? sec(
+        'Things to steer clear of',
+        `<span style="font-size:13px;color:#5A5048;line-height:1.7">${s.hardNos.join(' · ')}</span>`,
+        'These are firm boundaries. If any of these come up during the design process, refer back here. They are not up for compromise.'
+      ) : ''}
+
+      <div style="margin-top:10px">
+        <div style="font-size:9px;font-weight:600;letter-spacing:0.11em;text-transform:uppercase;color:#B8B0A4;margin-bottom:5px">Your design in action</div>
+        <div style="font-size:12px;color:#9A9080;margin-bottom:16px">This is what all of the above looks like on a page. Fonts, colours, layout, and structure applied together.</div>
+        <div style="border-radius:10px;overflow:hidden;border:1px solid #EAE6E0;height:320px;position:relative">
+          <div class="anim-none" style="background:${bg_h};display:flex;flex-direction:column;height:100%">
+            <nav class="hero-nav" style="padding:${navPad_h};border-bottom:${navBorder_h};color:${heroLayout==='fullbleed'?'#FFFFFF':textCol_h};background:${heroLayout==='fullbleed'?'transparent':bg_h};position:${heroLayout==='fullbleed'?'absolute':'relative'};top:0;left:0;right:0;z-index:10;flex-shrink:0">
+              <div class="hero-nav-logo" style="font-family:${headFont_h};font-weight:${headWt_h}">${s.brandName || pal?.name || 'Your Brand'}</div>
+              <div class="hero-nav-links" style="font-family:${bodyFont_h}">
+                <span>Work</span><span>About</span><span>Services</span><span>Contact</span>
+              </div>
+            </nav>
+            ${heroHtml}
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:#B8B0A4;font-style:italic">${layoutLabels[heroLayout]}</div>
+      </div>
+
+    </div>`;
+  window.print();
+}
+
+function copyPrompt() {
+  const s = state.selections;
+  const typo = TYPOGRAPHY_OPTIONS.find(t => t.id === s.typography);
+  const pal = PALETTE_OPTIONS.find(p => p.id === s.palette);
+  const layout = LAYOUT_OPTIONS.find(l => l.id === s.layout);
+  const shape = SHAPE_OPTIONS.find(sh => sh.id === s.shape);
+  const border = BORDER_OPTIONS.find(b => b.id === s.border);
+  const motion = MOTION_OPTIONS.find(m => m.id === s.motion);
+  const texture = TEXTURE_OPTIONS.find(t => t.id === s.texture);
+  const anim = ANIM_OPTIONS.find(a => a.id === s.animStyle);
+  const voice = generateVoice(s, typo, pal, layout, shape);
+
+  const biz = BUSINESS_TYPES.find(b => b.id === s.businessType);
+  const text = [
+    'DESIGN PREFERENCE BRIEF',
+    'Generated via Tell Me Everything: A Design Preference Profile by Paige Woods',
+    '',
+    s.brandName ? `BRAND NAME\n${s.brandName}` : '',
+    biz ? `BUSINESS TYPE\n${biz.name}, ${biz.desc}` : '',
+    s.tone.length ? `EMOTIONAL DIRECTION\n${s.tone.join(', ')}` : '',
+    typo ? `TYPOGRAPHY\n${typo.name}: ${typo.descriptor}` : '',
+    pal ? `COLOUR PALETTE\n${pal.name}: ${pal.descriptor}\n${pal.colors.join(' · ')}` : (s.palette==='custom'?`COLOUR PALETTE\nCustom: bg ${s.customColors.bg}, text ${s.customColors.text}, accent ${s.customColors.accent}`:''),
+    layout ? `LAYOUT & SPACING\n${layout.name}: ${layout.desc}` : '',
+    shape ? `SHAPE & EDGE\n${shape.name}: ${shape.desc}` : '',
+    border ? `BORDERS & LINES\n${border.name}: ${border.desc}` : '',
+    motion ? `MOTION\n${motion.name}: ${motion.desc}` : '',
+    texture ? `TEXTURE\n${texture.name}: ${texture.desc}` : '',
+    anim ? `ANIMATION STYLE\n${anim.name}: ${anim.desc}` : '',
+    s.hardNos.length ? `HARD NO'S\n${s.hardNos.join(', ')}` : '',
+    '',
+    `OVERALL DESIGN VOICE\n${voice}`,
+  ].filter(Boolean).join('\n\n');
+
+  navigator.clipboard.writeText(text).then(() => {
+    const el = document.getElementById('copy-confirm');
+    if (el) { el.style.display = 'inline'; setTimeout(() => el.style.display = 'none', 3000); }
+  });
+}
+
+// ─── CANVAS ──────────────────────────────────────────────────────────
+function renderCanvas() {
+  const s = state.selections;
+  const card = document.getElementById('canvas-card');
+  const bodyEl = document.getElementById('canvas-body');
+  const headEl = document.getElementById('canvas-headline');
+  const tagEl = document.getElementById('canvas-tagline');
+  const photoEl = document.getElementById('canvas-photo');
+  const stripEl = document.getElementById('canvas-palette-strip');
+  const ctaEl = document.getElementById('canvas-cta');
+  const tagsEl = document.getElementById('canvas-tone-tags');
+  if (!card) return;
+
+  // Photo
+  const ph = document.getElementById('canvas-photo-ph');
+  let existingImg = photoEl.querySelector('img');
+  if (s.brandPhoto) {
+    if (!existingImg) {
+      existingImg = document.createElement('img');
+      photoEl.appendChild(existingImg);
+    }
+    existingImg.src = s.brandPhoto;
+    existingImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover';
+    if (ph) ph.style.display = 'none';
+  } else {
+    if (existingImg) existingImg.remove();
+    if (ph) ph.style.display = '';
+  }
+
+  // Brand name
+  if (headEl && s.brandName) {
+    headEl.textContent = s.brandName;
+  } else if (headEl && !s.brandName) {
+    headEl.textContent = 'Your Brand, Defined';
+  }
+
+  // Tone tags
+  if (tagsEl) {
+    if (s.tone.length) {
+      const shown = s.tone.slice(0, 4);
+      const extra = s.tone.length > 4 ? `<div class="ctag">+${s.tone.length - 4}</div>` : '';
+      tagsEl.innerHTML = shown.map(t => `<div class="ctag on">${t}</div>`).join('') + extra;
+    } else {
+      tagsEl.innerHTML = '<div class="ctag">+ tone</div>';
+    }
+  }
+
+  // Typography
+  if (s.typography) {
+    const typo = TYPOGRAPHY_OPTIONS.find(t => t.id === s.typography);
+    if (typo && headEl && tagEl) {
+      headEl.style.fontFamily = typo.headFont;
+      headEl.style.fontWeight = typo.headWeight;
+      tagEl.style.fontFamily = typo.bodyFont;
+      tagEl.style.fontWeight = typo.bodyWeight;
+    }
+  }
+
+  // Palette
+  if (s.palette && stripEl) {
+    let palBg, palText, palAccent, palColors;
+    if (s.palette === 'custom') {
+      palBg = s.customColors.bg; palText = s.customColors.text; palAccent = s.customColors.accent;
+      palColors = [palBg, palText, palAccent];
+    } else {
+      const pal = PALETTE_OPTIONS.find(p => p.id === s.palette);
+      if (!pal) return;
+      palBg = pal.canvasBg; palText = pal.canvasText; palAccent = pal.canvasAccent; palColors = pal.colors;
+    }
+    stripEl.innerHTML = palColors.map(c => `<div class="cps" style="background:${c}"></div>`).join('');
+    if (bodyEl) bodyEl.style.background = palBg;
+    if (headEl) headEl.style.color = palText;
+    if (tagEl) tagEl.style.color = palText + 'AA';
+    if (ctaEl) { ctaEl.style.background = palAccent; ctaEl.style.color = isLight(palAccent) ? '#1A1A1A' : '#FFFFFF'; }
+    if (photoEl) photoEl.style.background = palBg;
+  }
+
+  // Shape
+  if (s.shape === 'sharp') {
+    card.style.borderRadius = '0'; if(ctaEl) ctaEl.style.borderRadius = '0';
+  } else if (s.shape === 'soft') {
+    card.style.borderRadius = '20px'; if(ctaEl) ctaEl.style.borderRadius = '20px';
+  } else if (s.shape) {
+    card.style.borderRadius = '12px'; if(ctaEl) ctaEl.style.borderRadius = '6px';
+  }
+
+  // Border
+  if (s.border === 'minimal') { card.style.border = 'none'; card.style.boxShadow = '0 2px 16px rgba(0,0,0,0.08)'; }
+  else if (s.border === 'structured') { card.style.border = '1px solid #E8E4DC'; card.style.boxShadow = 'none'; }
+  else if (s.border === 'editorial') { card.style.border = '1.5px solid #1A1A1A'; card.style.boxShadow = 'none'; }
+  else if (s.border === 'bold') { card.style.border = '3px solid #1A1A1A'; card.style.boxShadow = 'none'; }
+
+  // Layout: padding inside canvas body
+  if (s.layout === 'spacious' && bodyEl) bodyEl.style.padding = '26px';
+  else if (s.layout === 'dense' && bodyEl) bodyEl.style.padding = '12px';
+  else if (bodyEl) bodyEl.style.padding = '18px';
+
+  renderRecap();
+}
+
+function isLight(hex) {
+  if (!hex || hex.length < 7) return true;
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return (r*299+g*587+b*114)/1000 > 155;
+}
+
+// ─── RECAP ───────────────────────────────────────────────────────────
+function renderRecap() {
+  const s = state.selections;
+  const typo = TYPOGRAPHY_OPTIONS.find(t => t.id === s.typography);
+  const pal = PALETTE_OPTIONS.find(p => p.id === s.palette);
+  const layout = LAYOUT_OPTIONS.find(l => l.id === s.layout);
+  const shape = SHAPE_OPTIONS.find(sh => sh.id === s.shape);
+  const border = BORDER_OPTIONS.find(b => b.id === s.border);
+  const motion = MOTION_OPTIONS.find(m => m.id === s.motion);
+  const texture = TEXTURE_OPTIONS.find(t => t.id === s.texture);
+
+  const items = [
+    {key:'Tone', val: s.tone.length ? s.tone.join(', ') : null},
+    {key:'Typography', val: typo?.name || null},
+    {key:'Palette', val: pal?.name || null},
+    {key:'Layout', val: layout?.name || null},
+    {key:'Shape', val: shape?.name || null},
+    {key:'Borders', val: border?.name || null},
+    {key:'Motion', val: motion?.name || null},
+    {key:'Texture', val: texture?.name || null},
+    {key:"Hard No's", val: s.hardNos.length ? s.hardNos.join(', ') : null},
+  ];
+
+  const el = document.getElementById('recap-list');
+  if (!el) return;
+  el.innerHTML = items.map(item => `
+    <div class="recap-item">
+      <div class="recap-key">${item.key}</div>
+      ${item.val ? `<div class="recap-val">${item.val}</div>` : `<div class="recap-empty">Not yet chosen</div>`}
+    </div>`).join('');
+}
+
+// ─── START OVER ──────────────────────────────────────────────────────
+function startOver() {
+  sessionStorage.removeItem(STATE_KEY);
+  state.currentStep = 0;
+  state.selections = {businessType:null,brandName:'',brandPhoto:null,tone:[],typography:null,palette:null,customColors:{bg:'#F9F6F2',text:'#3A2E24',accent:'#8A7560'},layout:null,shape:null,border:null,motion:null,texture:null,animStyle:null,hardNos:[]};
+  // reset canvas inline styles
+  const card = document.getElementById('canvas-card');
+  const body = document.getElementById('canvas-body');
+  const head = document.getElementById('canvas-headline');
+  const tag = document.getElementById('canvas-tagline');
+  const cta = document.getElementById('canvas-cta');
+  const photo = document.getElementById('canvas-photo');
+  if(card){card.style.borderRadius='';card.style.border='';card.style.boxShadow='';}
+  if(body){body.style.background='';body.style.padding='';}
+  if(head){head.style.fontFamily='';head.style.fontWeight='';head.style.color='';}
+  if(tag){tag.style.fontFamily='';tag.style.fontWeight='';tag.style.color='';}
+  if(cta){cta.style.background='';cta.style.color='';cta.style.borderRadius='';}
+  if(photo){photo.style.background='';const img=photo.querySelector('img');if(img)img.remove();}
+  renderStep();
+  renderCanvas();
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────────────────
+function goNext() {
+  if (state.currentStep < 14) { state.currentStep++; saveState(); renderStep(); }
+}
+function goBack() {
+  if (state.currentStep > 0) { state.currentStep--; saveState(); renderStep(); }
+}
+function jumpTo(step) {
+  state.currentStep = step; saveState(); renderStep();
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────
+loadState();
+renderStep();
+renderCanvas();
+</script>
+</body>
+</html>
