@@ -717,13 +717,21 @@ const HARD_NO_OPTIONS = [
   'Generic corporate look','Heavy use of icons',
 ];
 
+const PHOTO_LAYOUT_OPTIONS = [
+  {id:'fullbleed', name:'Photo as background', desc:'The image fills the whole scene. Text sits on top.'},
+  {id:'split',     name:'Side by side',        desc:'Text on the left, photo on the right. Clean and direct.'},
+  {id:'floating',  name:'Layered card',        desc:'Photo overlaps the background as a styled card.'},
+  {id:'framed',    name:'Framed and contained',desc:'Photo sits in a clean editorial box next to the text.'},
+  {id:'polaroid',  name:'Polaroid style',      desc:'Photo as a tilted print. Relaxed and personal.'},
+];
+
 // ─── STATE ──────────────────────────────────────────────────────────
 const STATE_KEY = 'tme_session';
 
 const defaultState = () => ({
   currentStep: 0,
   selections: {
-    businessType: null, brandName: '', brandPhoto: null, tone: [],
+    businessType: null, brandName: '', brandPhoto: null, photoLayout: null, tone: [],
     typography: null, palette: null,
     customColors: {bg:'#F9F6F2', text:'#3A2E24', accent:'#8A7560', accent2:'#EDE8E0', accent3:'#C8B89A'},
     layout: null, shape: null, border: null, motion: null,
@@ -758,23 +766,23 @@ function loadState() {
 const state = defaultState();
 
 // step index to key mapping
-const STEP_KEYS = [null,'businessType',null,'tone','typography','palette','layout','shape','border','motion','animStyle',null,null];
-const TOTAL_PREF_STEPS = 10;
+const STEP_KEYS = [null,'businessType',null,'photoLayout','tone','typography','palette','layout','shape','border','motion','animStyle',null,null];
+const TOTAL_PREF_STEPS = 11;
 
 // ─── PROGRESS ───────────────────────────────────────────────────────
 function updateProgress() {
   const s = state.currentStep;
-  const labels = ['Welcome','Your business','Your photos','How it feels','How it reads','Color',
+  const labels = ['Welcome','Your business','Your photos','Photo layout','How it feels','How it reads','Color',
     'How it breathes','Shapes','Structure','Movement','Animation','Review','Your profile'];
 
   document.getElementById('progress-label').textContent = labels[s] || '';
 
-  const pct = s <= 0 ? 0 : s >= 12 ? 100 : Math.round((s / 12) * 100);
+  const pct = s <= 0 ? 0 : s >= 13 ? 100 : Math.round((s / 13) * 100);
   document.getElementById('progress-fill').style.width = pct + '%';
 
-  // dots for steps 1-10
+  // dots for steps 1-11
   let dotsHtml = '';
-  for (let i = 1; i <= 10; i++) {
+  for (let i = 1; i <= 11; i++) {
     const cls = i < s ? 'done' : i === s ? 'active' : '';
     dotsHtml += `<div class="pdot ${cls}"></div>`;
   }
@@ -785,7 +793,7 @@ function updateProgress() {
 function renderStep() {
   const panel = document.getElementById('step-panel');
   const body = document.querySelector('.app-body');
-  body.classList.toggle('summary-mode', state.currentStep === 12);
+  body.classList.toggle('summary-mode', state.currentStep === 13);
   panel.classList.remove('step-animate');
   void panel.offsetWidth;
   panel.classList.add('step-animate');
@@ -796,16 +804,17 @@ function renderStep() {
     case 0:  panel.innerHTML = renderWelcome(); break;
     case 1:  panel.innerHTML = renderBusinessType(); break;
     case 2:  panel.innerHTML = renderUpload(); setupUpload(); break;
-    case 3:  panel.innerHTML = renderTone(); break;
-    case 4:  panel.innerHTML = renderTypography(); break;
-    case 5:  panel.innerHTML = renderPalette(); break;
-    case 6:  panel.innerHTML = renderLayout(); break;
-    case 7:  panel.innerHTML = renderShape(); break;
-    case 8:  panel.innerHTML = renderBorders(); break;
-    case 9:  panel.innerHTML = renderMotion(); break;
-    case 10: panel.innerHTML = renderAnimation(); break;
-    case 11: panel.innerHTML = renderReview(); break;
-    case 12: panel.innerHTML = renderSummary(); break;
+    case 3:  panel.innerHTML = renderPhotoLayout(); break;
+    case 4:  panel.innerHTML = renderTone(); break;
+    case 5:  panel.innerHTML = renderTypography(); break;
+    case 6:  panel.innerHTML = renderPalette(); break;
+    case 7:  panel.innerHTML = renderLayout(); break;
+    case 8:  panel.innerHTML = renderShape(); break;
+    case 9:  panel.innerHTML = renderBorders(); break;
+    case 10: panel.innerHTML = renderMotion(); break;
+    case 11: panel.innerHTML = renderAnimation(); break;
+    case 12: panel.innerHTML = renderReview(); break;
+    case 13: panel.innerHTML = renderSummary(); break;
   }
 }
 
@@ -935,6 +944,77 @@ function removePhoto() {
   saveState();
   renderStep();
   renderCanvas();
+}
+
+// ─── PHOTO LAYOUT ────────────────────────────────────────────────────
+function renderPhotoLayout() {
+  const sel = state.selections.photoLayout;
+  const bar = (w,op=0.6) => `<div style="height:5px;width:${w}%;background:rgba(160,160,160,${op});border-radius:1px"></div>`;
+  const btn = (r='20px') => `<div style="height:14px;width:40%;background:rgba(140,140,140,0.6);border-radius:${r};margin-top:5px"></div>`;
+
+  const tiles = {
+    fullbleed: visTile(`
+      <div style="height:100%;position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;background:#404040"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.2) 100%)"></div>
+        <div style="position:absolute;left:12px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:4px;width:55%">
+          <div style="height:9px;background:rgba(255,255,255,0.85);border-radius:1px;width:80%"></div>
+          ${bar(90,0.5)}${bar(65,0.4)}${btn()}
+        </div>
+      </div>`),
+    split: visTile(`
+      <div style="height:100%;display:grid;grid-template-columns:1fr 1fr">
+        <div style="padding:12px;display:flex;flex-direction:column;justify-content:center;gap:4px">
+          <div style="height:8px;background:#585858;border-radius:1px;width:80%"></div>
+          ${bar(90)}${bar(65)}${btn('3px')}
+        </div>
+        <div style="background:#484848;border-left:1px solid #2e2e2e"></div>
+      </div>`),
+    floating: visTile(`
+      <div style="height:100%;position:relative;overflow:hidden">
+        <div style="position:absolute;left:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:4px;width:48%">
+          <div style="height:8px;background:#585858;border-radius:1px;width:80%"></div>
+          ${bar(90)}${bar(65)}${btn('3px')}
+        </div>
+        <div style="position:absolute;right:-4px;top:8px;width:52%;height:88%;background:#484848;border-radius:6px;transform:rotate(-3deg);box-shadow:0 6px 18px rgba(0,0,0,0.6)"></div>
+      </div>`),
+    framed: visTile(`
+      <div style="height:100%;display:flex;gap:8px;padding:10px;align-items:center">
+        <div style="flex:1;display:flex;flex-direction:column;gap:4px">
+          <div style="height:8px;background:#585858;border-radius:1px;width:80%"></div>
+          ${bar(90)}${bar(65)}${btn('3px')}
+        </div>
+        <div style="width:42%;height:80%;background:#404040;border-radius:3px;border:2px solid #606060;flex-shrink:0"></div>
+      </div>`),
+    polaroid: visTile(`
+      <div style="height:100%;position:relative;overflow:hidden">
+        <div style="position:absolute;left:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:4px;width:44%">
+          <div style="height:8px;background:#585858;border-radius:1px;width:80%"></div>
+          ${bar(90)}${bar(65)}
+        </div>
+        <div style="position:absolute;right:6px;top:6px;width:46%;height:88%;background:#f5f5f5;border-radius:2px;transform:rotate(4deg);box-shadow:0 4px 12px rgba(0,0,0,0.5);display:flex;flex-direction:column;overflow:hidden">
+          <div style="flex:1;background:#484848"></div>
+          <div style="height:14px;background:#f5f5f5"></div>
+        </div>
+      </div>`),
+  };
+
+  return `
+    <div class="step-eyebrow">Step 3 of ${TOTAL_PREF_STEPS}</div>
+    <h2 class="step-title">How should the photo sit on the page?</h2>
+    <p class="step-desc">Pick the layout that feels right. You can see it update live on the right.</p>
+    <div class="vis-grid">
+      ${PHOTO_LAYOUT_OPTIONS.map(o => `
+        <div class="vis-card ${sel===o.id?'selected':''}" onclick="selectOption('photoLayout','${o.id}',this)">
+          ${tiles[o.id]}
+          <div class="option-name">${o.name}</div>
+          <div class="ocheck"></div>
+        </div>`).join('')}
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()">← Back</button>
+      <button class="btn-next" onclick="goNext()">Next Step →</button>
+    </div>`;
 }
 
 // ─── TONE ────────────────────────────────────────────────────────────
@@ -1295,14 +1375,15 @@ function renderReview() {
     {cat:'Brand name', val: s.brandName || 'Not entered', step:1},
     {cat:'Business type', val: biz ? biz.name : 'Not chosen', step:1},
     {cat:'Brand photo', val: s.brandPhoto ? 'Uploaded' : 'Skipped', step:2},
-    {cat:'How it feels', val: s.tone.length ? s.tone.join(', ') : 'Not chosen', step:3},
-    {cat:'Fonts', val: typo ? typo.name : 'Not chosen', step:4},
-    {cat:'Color palette', val: pal ? pal.name : (s.palette==='custom'?'Custom colors':'Not chosen'), step:5},
-    {cat:'How it breathes', val: layout ? layout.name : 'Not chosen', step:6},
-    {cat:'Shapes', val: shape ? shape.name : 'Not chosen', step:7},
-    {cat:'Structure', val: border ? border.name : 'Not chosen', step:8},
-    {cat:'Movement', val: motion ? motion.name : 'Not chosen', step:9},
-    {cat:'Animation', val: ANIM_OPTIONS.find(a=>a.id===s.animStyle)?.name || 'Not chosen', step:10},
+    {cat:'Photo layout', val: PHOTO_LAYOUT_OPTIONS.find(p=>p.id===s.photoLayout)?.name || 'Not chosen', step:3},
+    {cat:'How it feels', val: s.tone.length ? s.tone.join(', ') : 'Not chosen', step:4},
+    {cat:'Fonts', val: typo ? typo.name : 'Not chosen', step:5},
+    {cat:'Color palette', val: pal ? pal.name : (s.palette==='custom'?'Custom colors':'Not chosen'), step:6},
+    {cat:'How it breathes', val: layout ? layout.name : 'Not chosen', step:7},
+    {cat:'Shapes', val: shape ? shape.name : 'Not chosen', step:8},
+    {cat:'Structure', val: border ? border.name : 'Not chosen', step:9},
+    {cat:'Movement', val: motion ? motion.name : 'Not chosen', step:10},
+    {cat:'Animation', val: ANIM_OPTIONS.find(a=>a.id===s.animStyle)?.name || 'Not chosen', step:11},
   ];
 
   return `
@@ -1328,17 +1409,13 @@ function renderReview() {
 
 // ─── HERO LAYOUT SELECTOR ────────────────────────────────────────────
 function getHeroLayout(s) {
+  if (s.photoLayout) return s.photoLayout;
   const tone = s.tone.map(t => t.toLowerCase());
   const has = (...words) => words.some(w => tone.includes(w));
-
-  if (s.shape === 'sharp' && (s.border === 'editorial' || s.border === 'bold'))
-    return 'framed';
-  if (has('bold','moody','editorial','raw') || s.border === 'bold')
-    return 'fullbleed';
-  if (has('warm','approachable','rustic','playful','whimsical') || s.shape === 'soft')
-    return 'polaroid';
-  if (has('modern','crisp') || s.motion === 'expressive')
-    return 'floating';
+  if (s.shape === 'sharp' && (s.border === 'editorial' || s.border === 'bold')) return 'framed';
+  if (has('bold','moody','editorial','raw') || s.border === 'bold') return 'fullbleed';
+  if (has('warm','approachable','rustic','playful','whimsical') || s.shape === 'soft') return 'polaroid';
+  if (has('modern','crisp') || s.motion === 'expressive') return 'floating';
   return 'split';
 }
 
@@ -2063,7 +2140,7 @@ function startOver() {
 
 // ─── NAVIGATION ──────────────────────────────────────────────────────
 function goNext() {
-  if (state.currentStep < 12) { state.currentStep++; saveState(); renderStep(); }
+  if (state.currentStep < 13) { state.currentStep++; saveState(); renderStep(); }
 }
 function goBack() {
   if (state.currentStep > 0) { state.currentStep--; saveState(); renderStep(); }
